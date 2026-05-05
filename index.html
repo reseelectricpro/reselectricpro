@@ -107,9 +107,8 @@ tr:hover td{background:#f8fafc}
             </select>
           </div>
         </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div><label>Total Area (sq ft)</label><input type="number" id="pi_areaft" value="1500" onchange="syncArea('ft')"></div>
-          <div><label>Total Area (m²)</label><input type="number" id="pi_aream" value="139" onchange="syncArea('m')"></div>
+        <div>
+          <label>Total Area (m²)</label><input type="number" id="pi_aream" value="139" onchange="updateProjectInfo()">
         </div>
       </div>
     </div>
@@ -122,7 +121,7 @@ tr:hover td{background:#f8fafc}
       </div>
       <div class="overflow-x-auto">
         <table id="roomTable">
-          <thead><tr><th>#</th><th>Room Name</th><th>Type</th><th>L (ft)</th><th>W (ft)</th><th>H (ft)</th><th>Doors</th><th>Area ft²</th><th>Actions</th></tr></thead>
+          <thead><tr><th>#</th><th>Room Name</th><th>Type</th><th>L (m)</th><th>W (m)</th><th>H (m)</th><th>Doors</th><th>Area m²</th><th>Actions</th></tr></thead>
           <tbody id="roomTableBody"></tbody>
           <tfoot><tr><td colspan="7" class="font-bold text-right pr-2 py-2 text-sm">Total Area:</td><td class="font-bold text-indigo-700" id="roomTotalArea">—</td><td></td></tr></tfoot>
         </table>
@@ -134,7 +133,7 @@ tr:hover td{background:#f8fafc}
           <button class="btn btn-ghost btn-sm" onclick="openApplianceModal()">+ Add Appliance</button>
         </div>
         <table id="applianceTable">
-          <thead><tr><th>Appliance</th><th>VA / W</th><th>Volts</th><th>Amps</th><th>Dedicated</th><th>Run (ft)</th><th>Actions</th></tr></thead>
+          <thead><tr><th>Appliance</th><th>VA / W</th><th>Volts</th><th>Amps</th><th>Dedicated</th><th>Run (m)</th><th>Actions</th></tr></thead>
           <tbody id="applianceTableBody"></tbody>
         </table>
       </div>
@@ -193,13 +192,13 @@ tr:hover td{background:#f8fafc}
       <h2 class="font-bold text-slate-700 mb-3">Conductor Sizing Reference (NEC Table 310.16 — 60°C Cu)</h2>
       <div class="overflow-x-auto">
         <table>
-          <thead><tr><th>AWG</th><th>Ampacity</th><th>Ω/1000ft</th><th>Typical Use</th><th>Max Run @ 3% VD / 15A</th><th>Max Run @ 3% VD / 20A</th></tr></thead>
+          <thead><tr><th>AWG</th><th>Ampacity</th><th>Ω/km</th><th>Typical Use</th><th>Max Run @ 3% VD / 15A</th><th>Max Run @ 3% VD / 20A</th></tr></thead>
           <tbody>
-            <tr><td class="font-bold text-blue-700">14 AWG</td><td>15 A</td><td>3.14</td><td>Lighting / 15A</td><td id="vd_14_15">—</td><td class="text-gray-400">N/A</td></tr>
-            <tr><td class="font-bold text-indigo-700">12 AWG</td><td>20 A</td><td>1.98</td><td>General outlets / 20A</td><td id="vd_12_15">—</td><td id="vd_12_20">—</td></tr>
-            <tr><td class="font-bold text-teal-700">10 AWG</td><td>30 A</td><td>1.24</td><td>Dryer / small AC / 30A</td><td>—</td><td id="vd_10_20">—</td></tr>
-            <tr><td class="font-bold text-orange-700">8 AWG</td><td>40 A</td><td>0.778</td><td>Range / 40A</td><td>—</td><td>—</td></tr>
-            <tr><td class="font-bold text-red-700">6 AWG</td><td>55 A</td><td>0.491</td><td>Central AC / 50A</td><td>—</td><td>—</td></tr>
+            <tr><td class="font-bold text-blue-700">14 AWG</td><td>15 A</td><td>10.30</td><td>Lighting / 15A</td><td id="vd_14_15">—</td><td class="text-gray-400">N/A</td></tr>
+            <tr><td class="font-bold text-indigo-700">12 AWG</td><td>20 A</td><td>6.50</td><td>General outlets / 20A</td><td id="vd_12_15">—</td><td id="vd_12_20">—</td></tr>
+            <tr><td class="font-bold text-teal-700">10 AWG</td><td>30 A</td><td>4.07</td><td>Dryer / small AC / 30A</td><td>—</td><td id="vd_10_20">—</td></tr>
+            <tr><td class="font-bold text-orange-700">8 AWG</td><td>40 A</td><td>2.55</td><td>Range / 40A</td><td>—</td><td>—</td></tr>
+            <tr><td class="font-bold text-red-700">6 AWG</td><td>55 A</td><td>1.61</td><td>Central AC / 50A</td><td>—</td><td>—</td></tr>
           </tbody>
         </table>
       </div>
@@ -239,8 +238,8 @@ tr:hover td{background:#f8fafc}
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label>One-way Run Length (ft)</label>
-            <input type="number" id="ce_run" value="30" oninput="calcConductor()">
+            <label>One-way Run Length (m)</label>
+            <input type="number" id="ce_run" value="9" oninput="calcConductor()">
           </div>
           <div>
             <label>Max Voltage Drop %</label>
@@ -282,7 +281,7 @@ tr:hover td{background:#f8fafc}
       <thead><tr>
         <th>CKT #</th><th>Type</th><th>Description</th>
         <th>VA</th><th title="Amps">A</th><th>Breaker</th>
-        <th>AWG</th><th>Run (ft)</th>
+        <th>AWG</th><th>Run (m)</th>
         <th title="Voltage Drop %">VD %</th>
         <th>Load</th>
         <th>Phase</th><th>Protection</th><th>Status</th>
@@ -330,7 +329,7 @@ tr:hover td{background:#f8fafc}
             <button class="btn btn-ghost btn-sm" onclick="fpResetView()">⊞ Fit</button>
           </div>
           <span class="text-slate-400" id="fpCoords">x:0 y:0</span>
-          <span class="text-slate-400">1 grid = 1 ft</span>
+          <span class="text-slate-400">1 grid = 0.3 m</span>
         </div>
         <div style="overflow:auto;max-height:70vh">
           <svg id="fpCanvas" width="1200" height="760" xmlns="http://www.w3.org/2000/svg">
@@ -467,9 +466,9 @@ tr:hover td{background:#f8fafc}
       </div>
       <!-- Wire Footage Rollup -->
       <div class="card">
-        <h3 class="font-bold text-slate-700 mb-3">Wire Footage Rollup</h3>
+        <h3 class="font-bold text-slate-700 mb-3">Wire Length Rollup</h3>
         <div id="wireRollup" class="space-y-2"></div>
-        <div class="mt-3 text-xs text-gray-400">Includes 10% waste factor. NM-B box sizes: 25ft, 50ft, 100ft, 250ft, 500ft.</div>
+        <div class="mt-3 text-xs text-gray-400">Includes 10% waste factor. NM-B box sizes: 8m, 15m, 30m, 75m, 150m.</div>
       </div>
     </div>
   </div>
@@ -494,13 +493,13 @@ tr:hover td{background:#f8fafc}
         </select>
       </div>
       <div class="grid grid-cols-3 gap-3">
-        <div><label>Length (ft)</label><input type="number" id="rm_len" value="12"></div>
-        <div><label>Width (ft)</label><input type="number" id="rm_wid" value="10"></div>
-        <div><label>Height (ft)</label><input type="number" id="rm_hgt" value="9"></div>
+        <div><label>Length (m)</label><input type="number" id="rm_len" value="3.7" step="0.1"></div>
+        <div><label>Width (m)</label><input type="number" id="rm_wid" value="3.0" step="0.1"></div>
+        <div><label>Height (m)</label><input type="number" id="rm_hgt" value="2.7" step="0.1"></div>
       </div>
       <div class="grid grid-cols-2 gap-3">
         <div><label>Doors</label><input type="number" id="rm_doors" value="1" min="0"></div>
-        <div><label>Default Run (ft)</label><input type="number" id="rm_run" value="30"></div>
+        <div><label>Default Run (m)</label><input type="number" id="rm_run" value="9" step="0.5"></div>
       </div>
     </div>
     <div class="flex gap-3 mt-4">
@@ -525,7 +524,7 @@ tr:hover td{background:#f8fafc}
         <div><label>Dedicated Circuit</label>
           <select id="ap_dedicated"><option value="true">Yes</option><option value="false">No</option></select>
         </div>
-        <div><label>Wire Run (ft)</label><input type="number" id="ap_run" value="40"></div>
+        <div><label>Wire Run (m)</label><input type="number" id="ap_run" value="12" step="0.5"></div>
       </div>
     </div>
     <div class="flex gap-3 mt-4">
@@ -584,12 +583,12 @@ const EM = {
   },
 
   outletsForRoom(l,w) {
-    const perim = 2*(l+w);
-    return Math.max(2, Math.ceil(perim/12));
+    const perim = 2*(l+w); // l,w in metres; NEC requires outlet every 3.66 m (12 ft)
+    return Math.max(2, Math.ceil(perim/3.66));
   },
 
   fixturesForRoom(l,w) {
-    return Math.max(1, Math.ceil((l*w)/50));
+    return Math.max(1, Math.ceil((l*w)/4.65)); // 50 ft² ≈ 4.65 m²
   },
 
   panelSpaces(n) {
@@ -609,7 +608,7 @@ const EM = {
   maxRunAt3pct(awg,amps,volts=120) {
     const R = this.AWG_R[awg];
     if(!R) return 0;
-    return Math.floor((0.03*volts*1000)/(2*R*amps));
+    return Math.floor((0.03*volts*1000)/(2*R*amps) * 0.3048); // result in metres
   }
 };
 
@@ -637,10 +636,11 @@ function generateCircuits() {
   const circuits = [];
   let num = 1;
 
-  const add = (type, desc, va, volts, ded, roomType, runFt) => {
+  const add = (type, desc, va, volts, ded, roomType, runM) => {
     const i = va/volts;
     const b = EM.breakerFor(i/EM.SAFETY);
     const awgBase = EM.awgFor(b);
+    const runFt = runM * 3.28084; // convert metres → feet for VD math (AWG_R is Ω/1000ft)
     const awg = EM.bestAwg(i, runFt, volts);
     const finalAwg = Math.min(awgBase, awg);
     const vd = EM.vdropPct(finalAwg, i, runFt, volts);
@@ -648,7 +648,7 @@ function generateCircuits() {
                : EM.needsAFCI(roomType||'') ? 'AFCI' : 'Standard';
     circuits.push({
       num, type, desc, va, volts, amps:+i.toFixed(2),
-      breaker:b, awg:finalAwg, run:runFt, vd:+vd.toFixed(2),
+      breaker:b, awg:finalAwg, run:runM, vd:+vd.toFixed(2),
       phase:null, prot, ded, roomType:roomType||''
     });
     num++;
@@ -656,11 +656,11 @@ function generateCircuits() {
 
   // Per-room circuits
   for(const r of State.rooms) {
-    const area = r.l*r.w;
-    const run = r.run||30;
+    const area = r.l*r.w; // m²
+    const run = r.run||9;  // metres
 
-    // Lighting
-    const lghtVA = Math.min(area*3, 1440);
+    // Lighting: NEC 220.12 → 3 VA/ft² = 32.29 VA/m²
+    const lghtVA = Math.min(area*32.29, 1440);
     add('LIGHTING', r.name+' — Lighting', lghtVA, 120, false, r.type, run);
 
     if(/kitchen/i.test(r.type)) {
@@ -684,7 +684,7 @@ function generateCircuits() {
   // Dedicated appliances
   for(const a of State.appliances) {
     if(a.dedicated==='true'||a.dedicated===true) {
-      add('APPLIANCE', a.name, a.va, a.volts, true, a.roomType||'', a.run||40);
+      add('APPLIANCE', a.name, a.va, a.volts, true, a.roomType||'', a.run||12);
     }
   }
 
@@ -711,9 +711,9 @@ function calcLoad() {
   const items = [];
   let total = 0;
 
-  const area = parseFloat(document.getElementById('pi_areaft').value)||1500;
-  const lghtVA = area*3;
-  items.push({cat:'General Lighting (NEC 220.12)', method:`${area} ft² × 3 VA/ft²`, va:lghtVA, df:1});
+  const area_m2 = parseFloat(document.getElementById('pi_aream').value)||139;
+  const lghtVA = area_m2 * 32.29; // NEC 220.12: 3 VA/ft² = 32.29 VA/m²
+  items.push({cat:'General Lighting (NEC 220.12)', method:`${area_m2} m² × 32.3 VA/m²`, va:lghtVA, df:1});
   total += lghtVA;
 
   const hasKitchen = State.rooms.some(r=>/kitchen/i.test(r.type));
@@ -747,12 +747,12 @@ function renderRoomTable() {
   tbody.innerHTML = '';
   let totalArea = 0;
   State.rooms.forEach((r,i)=>{
-    const area = r.l*r.w;
+    const area = +(r.l*r.w).toFixed(2);
     totalArea+=area;
     const tr = document.createElement('tr');
     tr.innerHTML=`<td>${i+1}</td><td class="font-medium">${r.name}</td>
       <td><span class="capitalize text-sm text-gray-600">${r.type}</span></td>
-      <td>${r.l}</td><td>${r.w}</td><td>${r.h||9}</td><td>${r.doors||1}</td>
+      <td>${r.l}</td><td>${r.w}</td><td>${r.h||2.7}</td><td>${r.doors||1}</td>
       <td class="font-semibold">${area}</td>
       <td class="flex gap-1">
         <button class="btn btn-ghost btn-sm" onclick="editRoom('${r.id}')">✏</button>
@@ -760,7 +760,7 @@ function renderRoomTable() {
       </td>`;
     tbody.appendChild(tr);
   });
-  document.getElementById('roomTotalArea').textContent = totalArea+' ft²';
+  document.getElementById('roomTotalArea').textContent = totalArea.toFixed(1)+' m²';
 }
 
 function renderApplianceTable() {
@@ -810,10 +810,10 @@ function renderLoadAnalysis() {
     </tr>`;
 
   // VD reference
-  document.getElementById('vd_14_15').textContent = EM.maxRunAt3pct(14,15)+' ft';
-  document.getElementById('vd_12_15').textContent = EM.maxRunAt3pct(12,15)+' ft';
-  document.getElementById('vd_12_20').textContent = EM.maxRunAt3pct(12,20)+' ft';
-  document.getElementById('vd_10_20').textContent = EM.maxRunAt3pct(10,20)+' ft';
+  document.getElementById('vd_14_15').textContent = EM.maxRunAt3pct(14,15)+' m';
+  document.getElementById('vd_12_15').textContent = EM.maxRunAt3pct(12,15)+' m';
+  document.getElementById('vd_12_20').textContent = EM.maxRunAt3pct(12,20)+' m';
+  document.getElementById('vd_10_20').textContent = EM.maxRunAt3pct(10,20)+' m';
 
   renderLoadChart(items, total);
   renderPhaseBalance();
@@ -1054,7 +1054,7 @@ function circuitRowSvg(x,y,w,c,clr,dir) {
   // Labels
   const awgLabel = `#${c.awg} AWG`;
   const cktLabel = `CKT ${c.num}: ${c.desc.substring(0,32)}`;
-  const detailLabel = `${c.breaker}A · ${awgLabel} · ${c.run}ft · VD:${c.vd}%`;
+  const detailLabel = `${c.breaker}A · ${awgLabel} · ${c.run}m · VD:${c.vd}%`;
   if(dir==='left'){
     s+=`<text x="${tx}" y="${y+11}" fill="#1e293b" font-size="10" font-weight="600">${cktLabel}</text>`;
     s+=`<text x="${tx}" y="${y+22}" fill="#64748b" font-size="9">${detailLabel}</text>`;
@@ -1073,7 +1073,7 @@ function twoPoleBreaker(x,y,w,h,clr,c) {
   s+=`<rect x="${x}" y="${y+half+2}" width="${w}" height="${half-2}" fill="none" stroke="${clr}" stroke-width="1.5" rx="2"/>`;
   s+=`<line x1="${x+4}" y1="${y+half+2}" x2="${x+w-4}" y2="${y+h}" stroke="${clr}" stroke-width="1.5"/>`;
   s+=`<text x="${x+w+8}" y="${y+h/2-4}" fill="#0f766e" font-size="10" font-weight="600">CKT ${c.num}: ${c.desc.substring(0,40)}</text>`;
-  s+=`<text x="${x+w+8}" y="${y+h/2+8}" fill="#64748b" font-size="9">${c.breaker}A 2P · #${c.awg} AWG · ${c.run}ft · VD:${c.vd}%</text>`;
+  s+=`<text x="${x+w+8}" y="${y+h/2+8}" fill="#64748b" font-size="9">${c.breaker}A 2P · #${c.awg} AWG · ${c.run}m · VD:${c.vd}%</text>`;
   return s;
 }
 
@@ -1171,15 +1171,15 @@ const FP = {
       const cx=r.fx+rw/2, cy=r.fy+rh/2;
       // Dimension lines
       const dimTop  = `<line x1="${r.fx}" y1="${r.fy-6}" x2="${r.fx+rw}" y2="${r.fy-6}" stroke="#94a3b8" stroke-width="0.8" stroke-dasharray="2 2"/>
-        <text x="${cx}" y="${r.fy-8}" text-anchor="middle" fill="#64748b" font-size="8">${r.l}′</text>`;
+        <text x="${cx}" y="${r.fy-8}" text-anchor="middle" fill="#64748b" font-size="8">${r.l}m</text>`;
       const dimLeft = `<line x1="${r.fx-6}" y1="${r.fy}" x2="${r.fx-6}" y2="${r.fy+rh}" stroke="#94a3b8" stroke-width="0.8" stroke-dasharray="2 2"/>
-        <text x="${r.fx-8}" y="${cy+3}" text-anchor="middle" fill="#64748b" font-size="8" transform="rotate(-90,${r.fx-8},${cy})">${r.w}′</text>`;
-      const area = r.l*r.w;
+        <text x="${r.fx-8}" y="${cy+3}" text-anchor="middle" fill="#64748b" font-size="8" transform="rotate(-90,${r.fx-8},${cy})">${r.w}m</text>`;
+      const area = (r.l*r.w).toFixed(1);
       layer.innerHTML+=`<g class="fp-room" data-roomid="${r.id}" style="cursor:move">
         ${dimTop}${dimLeft}
         <rect x="${r.fx}" y="${r.fy}" width="${rw}" height="${rh}" fill="${clr}" stroke="${bdr}" stroke-width="2" rx="4"/>
         <text x="${cx}" y="${cy-8}" text-anchor="middle" fill="#1e293b" font-size="11" font-weight="bold">${r.name}</text>
-        <text x="${cx}" y="${cy+5}" text-anchor="middle" fill="#64748b" font-size="9">${r.l}×${r.w} ft · ${area} ft²</text>
+        <text x="${cx}" y="${cy+5}" text-anchor="middle" fill="#64748b" font-size="9">${r.l}×${r.w} m · ${area} m²</text>
         <text x="${cx}" y="${cy+16}" text-anchor="middle" fill="#9ca3af" font-size="8" font-style="italic">${r.type}</text>
       </g>`;
     }
@@ -1210,7 +1210,7 @@ const FP = {
     canvas.addEventListener('mousemove', e=>{
       const r=canvas.getBoundingClientRect();
       const mx=e.clientX-r.left, my=e.clientY-r.top;
-      document.getElementById('fpCoords').textContent=`x:${Math.round(mx/20)} y:${Math.round(my/20)} ft`;
+      document.getElementById('fpCoords').textContent=`x:${(mx/20*0.3).toFixed(1)}m y:${(my/20*0.3).toFixed(1)}m`;
       if(dragSym) { dragSym.x=this.snap(mx); dragSym.y=this.snap(my); this.render(); }
       if(dragRoom) { dragRoom.fx=this.snap(mx-ox); dragRoom.fy=this.snap(my-oy); this.renderRooms(); }
     });
@@ -1294,8 +1294,8 @@ function fpAutoPopulate() {
     }
     // Switches at door
     FP.addSymbol('switch', r.fx+15, r.fy+15);
-    // Fan for large rooms
-    if(r.l*r.w>150) FP.addSymbol('fan', cx+30, cy);
+    // Fan for large rooms (>14 m² ≈ 150 ft²)
+    if(r.l*r.w>14) FP.addSymbol('fan', cx+30, cy);
     // Smoke in bedroom/hallway
     if(/bedroom|hall/i.test(r.type)) FP.addSymbol('smoke', r.fx+rw-15, r.fy+15);
     // 240V for dryer/range
@@ -1340,9 +1340,9 @@ function roomColor(type) {
 const UNIT_COSTS = {
   'br15':4.5,'br20':5.5,'br30':9,'br2p30':18,'br2p40':22,'br2p50':26,
   'brGFCI20':18,'brAFCI15':28,'brAFCI20':30,
-  'w14':0.12,'w12':0.18,'w10':0.28,'w8':0.45,'w6':0.62,
+  'w14':0.39,'w12':0.59,'w10':0.92,'w8':1.48,'w6':2.03, // per metre
   'outlet':3.5,'gfciOutlet':14,'switch':4,'switchDimmer':18,
-  'lightCeiling':12,'fan':65,'panel':120,'conduit':1.8,'jbox':3.2,
+  'lightCeiling':12,'fan':65,'panel':120,'conduit':5.91,'jbox':3.2, // conduit per metre
   'smoke':22,'panel200a':320,
 };
 
@@ -1366,8 +1366,8 @@ function generateBOM() {
       else { br[b]=(br[b]||0)+1; }
     }
     const awg=parseInt(ckt.awg);
-    const runFt=(ckt.run||30)*2.2; // factor for loops/waste
-    wire[awg]=(wire[awg]||0)+Math.ceil(runFt);
+    const runM=(ckt.run||9)*2.2; // factor for loops/waste (metres)
+    wire[awg]=(wire[awg]||0)+Math.ceil(runM);
   }
 
   // Count from floor plan
@@ -1391,11 +1391,11 @@ function generateBOM() {
     {cat:'Breakers',item:'30A 2-Pole MCCB (240V)',qty:br2p[30]||0,unit:'ea',key:'br2p30'},
     {cat:'Breakers',item:'40A 2-Pole MCCB (240V)',qty:br2p[40]||0,unit:'ea',key:'br2p40'},
     {cat:'Breakers',item:'50A 2-Pole MCCB (240V)',qty:br2p[50]||0,unit:'ea',key:'br2p50'},
-    {cat:'Wire',item:'#14 AWG THWN Copper',qty:wire[14]||0,unit:'ft',key:'w14'},
-    {cat:'Wire',item:'#12 AWG THWN Copper',qty:wire[12]||0,unit:'ft',key:'w12'},
-    {cat:'Wire',item:'#10 AWG THWN Copper',qty:wire[10]||0,unit:'ft',key:'w10'},
-    {cat:'Wire',item:'#8 AWG THWN Copper',qty:wire[8]||0,unit:'ft',key:'w8'},
-    {cat:'Wire',item:'#6 AWG THWN Copper',qty:wire[6]||0,unit:'ft',key:'w6'},
+    {cat:'Wire',item:'#14 AWG THWN Copper',qty:wire[14]||0,unit:'m',key:'w14'},
+    {cat:'Wire',item:'#12 AWG THWN Copper',qty:wire[12]||0,unit:'m',key:'w12'},
+    {cat:'Wire',item:'#10 AWG THWN Copper',qty:wire[10]||0,unit:'m',key:'w10'},
+    {cat:'Wire',item:'#8 AWG THWN Copper',qty:wire[8]||0,unit:'m',key:'w8'},
+    {cat:'Wire',item:'#6 AWG THWN Copper',qty:wire[6]||0,unit:'m',key:'w6'},
     {cat:'Devices',item:'Duplex Outlet (15/20A)',qty:outlets,unit:'ea',key:'outlet'},
     {cat:'Devices',item:'GFCI Outlet (20A)',qty:gfciOut,unit:'ea',key:'gfciOutlet'},
     {cat:'Devices',item:'Single-Pole Switch',qty:switches,unit:'ea',key:'switch'},
@@ -1403,7 +1403,7 @@ function generateBOM() {
     {cat:'Devices',item:'Ceiling Light Fixture',qty:lights,unit:'ea',key:'lightCeiling'},
     {cat:'Devices',item:'Ceiling Fan',qty:fans,unit:'ea',key:'fan'},
     {cat:'Safety',item:'Smoke Detector',qty:smokes,unit:'ea',key:'smoke'},
-    {cat:'Raceways',item:'EMT Conduit 1/2" (ft)',qty:Math.ceil(Object.values(wire).reduce((a,b)=>a+b,0)*0.3),unit:'ft',key:'conduit'},
+    {cat:'Raceways',item:'EMT Conduit 1/2" (m)',qty:Math.ceil(Object.values(wire).reduce((a,b)=>a+b,0)*0.3),unit:'m',key:'conduit'},
     {cat:'Raceways',item:'Electrical Box (4")',qty:jboxes,unit:'ea',key:'jbox'},
   ].filter(i=>i.qty>0);
 
@@ -1442,7 +1442,7 @@ function renderBOM() {
   const afci = State.circuits.filter(c=>c.prot==='AFCI').length;
   const panel = EM.panelSpaces(State.circuits.length);
   document.getElementById('necSummary').innerHTML=`
-    <li>NEC 210.52(A): Outlets every 12 ft on walls</li>
+    <li>NEC 210.52(A): Outlets every 3.7 m on walls</li>
     <li>NEC 210.52(B): Min. 2 × 20A small appliance circuits in kitchen</li>
     <li>NEC 210.52(F): Min. 1 × 20A laundry circuit</li>
     <li>NEC 210.12: AFCI protection required — ${afci} circuits flagged</li>
@@ -1497,7 +1497,7 @@ async function exportPDF() {
   doc.autoTable({
     startY: doc.lastAutoTable.finalY+14,
     head:[['#','Description','VA','A','Bkr','AWG','Run','VD%','Ph','Prot']],
-    body: State.circuits.map(c=>[c.num,c.desc,c.va,c.amps,c.breaker+'A','#'+c.awg,c.run+'ft',c.vd+'%',c.phase,c.prot]),
+    body: State.circuits.map(c=>[c.num,c.desc,c.va,c.amps,c.breaker+'A','#'+c.awg,c.run+'m',c.vd+'%',c.phase,c.prot]),
     theme:'striped',headStyles:{fillColor:[79,70,229]},styles:{fontSize:8},
     columnStyles:{0:{cellWidth:10},1:{cellWidth:60},9:{cellWidth:14}}
   });
@@ -1527,15 +1527,6 @@ function updateProjectInfo() {
   document.getElementById('hdrService').textContent = svc+' / 120-240V';
 }
 
-function syncArea(from) {
-  if(from==='ft') {
-    const ft=parseFloat(document.getElementById('pi_areaft').value)||0;
-    document.getElementById('pi_aream').value=(ft*0.0929).toFixed(0);
-  } else {
-    const m=parseFloat(document.getElementById('pi_aream').value)||0;
-    document.getElementById('pi_areaft').value=(m*10.764).toFixed(0);
-  }
-}
 
 function openRoomModal(id) {
   editingRoomId = id||null;
@@ -1546,9 +1537,9 @@ function openRoomModal(id) {
       document.getElementById('rm_type').value=r.type;
       document.getElementById('rm_len').value=r.l;
       document.getElementById('rm_wid').value=r.w;
-      document.getElementById('rm_hgt').value=r.h||9;
+      document.getElementById('rm_hgt').value=r.h||2.7;
       document.getElementById('rm_doors').value=r.doors||1;
-      document.getElementById('rm_run').value=r.run||30;
+      document.getElementById('rm_run').value=r.run||9;
     }
     document.getElementById('roomModalTitle').textContent='Edit Room';
   } else {
@@ -1562,11 +1553,11 @@ function saveRoom() {
   const r={
     name:document.getElementById('rm_name').value||'Room',
     type:document.getElementById('rm_type').value,
-    l:parseFloat(document.getElementById('rm_len').value)||12,
-    w:parseFloat(document.getElementById('rm_wid').value)||10,
-    h:parseFloat(document.getElementById('rm_hgt').value)||9,
+    l:parseFloat(document.getElementById('rm_len').value)||3.7,
+    w:parseFloat(document.getElementById('rm_wid').value)||3.0,
+    h:parseFloat(document.getElementById('rm_hgt').value)||2.7,
     doors:parseInt(document.getElementById('rm_doors').value)||1,
-    run:parseInt(document.getElementById('rm_run').value)||30,
+    run:parseFloat(document.getElementById('rm_run').value)||9,
   };
   if(editingRoomId) {
     const idx=State.rooms.findIndex(x=>x.id===editingRoomId);
@@ -1604,7 +1595,7 @@ function saveAppliance() {
     va:parseFloat(document.getElementById('ap_va').value)||1500,
     volts:parseInt(document.getElementById('ap_volts').value)||120,
     dedicated:document.getElementById('ap_dedicated').value,
-    run:parseInt(document.getElementById('ap_run').value)||40,
+    run:parseFloat(document.getElementById('ap_run').value)||12,
   };
   if(editingAppId) {
     const idx=State.appliances.findIndex(x=>x.id===editingAppId);
@@ -1641,7 +1632,8 @@ function calcConductor() {
   const raw   = parseFloat(document.getElementById('ce_val')?.value)||1500;
   const mode  = document.getElementById('ce_mode')?.value||'va';
   const volts = parseInt(document.getElementById('ce_volts')?.value)||120;
-  const run   = parseFloat(document.getElementById('ce_run')?.value)||30;
+  const runM  = parseFloat(document.getElementById('ce_run')?.value)||9;
+  const run   = runM * 3.28084; // convert metres → feet for VD math
   const maxVD = parseFloat(document.getElementById('ce_maxvd')?.value)||3;
   const el    = document.getElementById('ce_results');
   if(!el) return;
@@ -1708,7 +1700,7 @@ function calcConductor() {
     <div class="mb-3 p-2 rounded border text-xs font-medium ${vdBg}">${msg}</div>
     <div class="text-xs font-bold text-slate-600 mb-1">All Valid Gauges for This Load:</div>
     <table class="text-xs w-full"><thead><tr><th>AWG</th><th>Ampacity</th><th>VD %</th><th>VD (V)</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>
-    <div class="mt-2 text-xs text-gray-400">Formula: VD = (2 × ${run}ft × R × ${amps.toFixed(2)}A) / 1000 &nbsp;|&nbsp; VD% = VD / ${volts}V × 100</div>`;
+    <div class="mt-2 text-xs text-gray-400">Formula: VD = (2 × ${runM}m × R × ${amps.toFixed(2)}A) / 304.8 &nbsp;|&nbsp; VD% = VD / ${volts}V × 100</div>`;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1822,7 +1814,7 @@ function renderPanelFront() {
       // Circuit description
       const desc = sl.desc||'';
       s+=`<text x="${bx+bw+4}" y="${y+h/2-4}" fill="#1e293b" font-size="9" font-weight="600">${desc.substring(0,28)}</text>`;
-      s+=`<text x="${bx+bw+4}" y="${y+h/2+7}" fill="#64748b" font-size="8">#${sl.awg}AWG · ${sl.run}ft · VD:${sl.vd}%${sl.prot&&sl.prot!=='Standard'?' · '+sl.prot:''}</text>`;
+      s+=`<text x="${bx+bw+4}" y="${y+h/2+7}" fill="#64748b" font-size="8">#${sl.awg}AWG · ${sl.run}m · VD:${sl.vd}%${sl.prot&&sl.prot!=='Standard'?' · '+sl.prot:''}</text>`;
       if(sl.side==='LR') {
         s+=`<text x="${bx+bw+4}" y="${y+h/2+18}" fill="#0d9488" font-size="8">240V · ${sl.va.toLocaleString()}VA</text>`;
       }
@@ -1860,30 +1852,30 @@ function renderWireRollup() {
   const awgTotals = {14:0, 12:0, 10:0, 8:0, 6:0};
   for(const c of State.circuits) {
     const awg = parseInt(c.awg);
-    if(awgTotals[awg]!==undefined) awgTotals[awg] += Math.ceil(c.run*2*1.1); // 2-conductor × 1.1 waste
+    if(awgTotals[awg]!==undefined) awgTotals[awg] += Math.ceil(c.run*2*1.1); // 2-conductor × 1.1 waste (metres)
   }
 
-  const NMB_BOXES = [25,50,100,250,500];
+  const NMB_BOXES = [8,15,30,75,150]; // metres (≈ 25,50,100,250,500 ft NM-B boxes)
   const AWG_COLORS = {14:'text-blue-700',12:'text-indigo-700',10:'text-teal-700',8:'text-orange-700',6:'text-red-700'};
-  const AWG_PRICE  = {14:0.12,12:0.18,10:0.28,8:0.45,6:0.62};
+  const AWG_PRICE  = {14:0.39,12:0.59,10:0.92,8:1.48,6:2.03}; // per metre
 
-  el.innerHTML = Object.entries(awgTotals).filter(([,v])=>v>0).map(([awg,ft])=>{
-    const boxes = NMB_BOXES.filter(b=>b>=ft).slice(0,3);
-    const bestBox = boxes[0]||500;
-    const numBoxes = Math.ceil(ft/bestBox);
-    const cost = ft*AWG_PRICE[awg];
+  el.innerHTML = Object.entries(awgTotals).filter(([,v])=>v>0).map(([awg,m])=>{
+    const boxes = NMB_BOXES.filter(b=>b>=m).slice(0,3);
+    const bestBox = boxes[0]||150;
+    const numBoxes = Math.ceil(m/bestBox);
+    const cost = m*AWG_PRICE[awg];
     return `<div class="flex items-center gap-3 text-sm border-b pb-2">
       <span class="font-black text-lg w-16 ${AWG_COLORS[awg]}">#${awg} AWG</span>
       <div class="flex-1">
         <div class="flex items-center gap-2">
-          <span class="font-bold">${ft.toLocaleString()} ft needed</span>
+          <span class="font-bold">${m.toLocaleString()} m needed</span>
           <span class="text-gray-400">·</span>
-          <span class="text-gray-500">${numBoxes}×${bestBox}ft NM-B box${numBoxes>1?'es':''}</span>
+          <span class="text-gray-500">${numBoxes}×${bestBox}m NM-B box${numBoxes>1?'es':''}</span>
           <span class="text-gray-400">·</span>
           <span class="text-emerald-700 font-semibold">~$${cost.toFixed(2)}</span>
         </div>
         <div class="bg-gray-100 rounded h-2 mt-1 w-full">
-          <div class="h-2 rounded bg-gradient-to-r from-indigo-400 to-indigo-600" style="width:${Math.min(ft/500*100,100).toFixed(1)}%"></div>
+          <div class="h-2 rounded bg-gradient-to-r from-indigo-400 to-indigo-600" style="width:${Math.min(m/150*100,100).toFixed(1)}%"></div>
         </div>
       </div>
     </div>`;
@@ -1906,27 +1898,27 @@ document.querySelectorAll('.tab-btn').forEach(btn=>{
 function loadSampleData() {
   State.rooms=[];State.appliances=[];State._roomId=1;State._appId=1;
   const rooms=[
-    {name:'Living Room',type:'living',l:20,w:15,h:9,doors:2,run:25},
-    {name:'Kitchen',type:'kitchen',l:14,w:12,h:9,doors:1,run:30},
-    {name:'Dining Room',type:'dining',l:12,w:11,h:9,doors:1,run:35},
-    {name:'Master Bedroom',type:'bedroom',l:14,w:13,h:9,doors:1,run:40},
-    {name:'Bedroom 2',type:'bedroom',l:12,w:11,h:9,doors:1,run:45},
-    {name:'Bedroom 3',type:'bedroom',l:11,w:10,h:9,doors:1,run:50},
-    {name:'Bathroom 1',type:'bathroom',l:8,w:6,h:9,doors:1,run:35},
-    {name:'Bathroom 2',type:'bathroom',l:7,w:5,h:9,doors:1,run:45},
-    {name:'Garage',type:'garage',l:20,w:18,h:9,doors:1,run:20},
-    {name:'Laundry Room',type:'laundry',l:8,w:7,h:9,doors:1,run:30},
+    {name:'Living Room',type:'living',l:6.1,w:4.6,h:2.7,doors:2,run:7.6},
+    {name:'Kitchen',type:'kitchen',l:4.3,w:3.7,h:2.7,doors:1,run:9.1},
+    {name:'Dining Room',type:'dining',l:3.7,w:3.4,h:2.7,doors:1,run:10.7},
+    {name:'Master Bedroom',type:'bedroom',l:4.3,w:4.0,h:2.7,doors:1,run:12.2},
+    {name:'Bedroom 2',type:'bedroom',l:3.7,w:3.4,h:2.7,doors:1,run:13.7},
+    {name:'Bedroom 3',type:'bedroom',l:3.4,w:3.0,h:2.7,doors:1,run:15.2},
+    {name:'Bathroom 1',type:'bathroom',l:2.4,w:1.8,h:2.7,doors:1,run:10.7},
+    {name:'Bathroom 2',type:'bathroom',l:2.1,w:1.5,h:2.7,doors:1,run:13.7},
+    {name:'Garage',type:'garage',l:6.1,w:5.5,h:2.7,doors:1,run:6.1},
+    {name:'Laundry Room',type:'laundry',l:2.4,w:2.1,h:2.7,doors:1,run:9.1},
   ];
   rooms.forEach(r=>State.addRoom(r));
 
   const apps=[
-    {name:'Electric Dryer',va:5600,volts:240,dedicated:'true',run:30},
-    {name:'Water Heater (Elec)',va:4500,volts:240,dedicated:'true',run:25},
-    {name:'Central AC',va:5000,volts:240,dedicated:'true',run:20},
-    {name:'Refrigerator',va:700,volts:120,dedicated:'true',run:30},
-    {name:'Dishwasher',va:1200,volts:120,dedicated:'true',run:32},
-    {name:'Microwave',va:1500,volts:120,dedicated:'true',run:30},
-    {name:'Garbage Disposal',va:700,volts:120,dedicated:'true',run:30},
+    {name:'Electric Dryer',va:5600,volts:240,dedicated:'true',run:9.1},
+    {name:'Water Heater (Elec)',va:4500,volts:240,dedicated:'true',run:7.6},
+    {name:'Central AC',va:5000,volts:240,dedicated:'true',run:6.1},
+    {name:'Refrigerator',va:700,volts:120,dedicated:'true',run:9.1},
+    {name:'Dishwasher',va:1200,volts:120,dedicated:'true',run:9.8},
+    {name:'Microwave',va:1500,volts:120,dedicated:'true',run:9.1},
+    {name:'Garbage Disposal',va:700,volts:120,dedicated:'true',run:9.1},
   ];
   apps.forEach(a=>State.addAppl(a));
 
@@ -1934,7 +1926,6 @@ function loadSampleData() {
   document.getElementById('pi_client').value='John Smith';
   document.getElementById('pi_address').value='123 Main Street, Anytown';
   document.getElementById('pi_date').value=new Date().toISOString().split('T')[0];
-  document.getElementById('pi_areaft').value='1586';
   document.getElementById('pi_aream').value='147';
   updateProjectInfo();
   runAll();
