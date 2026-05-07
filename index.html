@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ResElectric Pro — Residential Electrical Planning Suite</title>
+<title>ResElectric Pro — Planificación Eléctrica Residencial</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -61,127 +61,143 @@ tr:hover td{background:#f8fafc}
       <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#f59e0b"/><path d="M18 4l-8 14h7l-2 10 10-14h-7l2-10z" fill="#1e293b"/></svg>
       <div>
         <div class="text-lg font-black tracking-tight">ResElectric <span class="text-yellow-400">Pro</span></div>
-        <div class="text-xs text-indigo-400">Residential Electrical Planning Suite · NEC 2023</div>
+        <div class="text-xs text-indigo-400">Planificación Eléctrica Residencial · NOM / INIFED</div>
       </div>
     </div>
     <div class="flex items-center gap-4">
-      <span class="text-sm text-indigo-200 font-semibold" id="hdrProject">New Project</span>
+      <span class="text-sm text-indigo-200 font-semibold" id="hdrProject">Nuevo Proyecto</span>
       <span class="text-xs bg-indigo-800 text-indigo-200 px-3 py-1 rounded-full" id="hdrService">200A / 120-240V</span>
     </div>
   </div>
   <nav class="max-w-screen-2xl mx-auto px-4 flex gap-0 overflow-x-auto border-t border-indigo-800">
-    <button class="tab-btn active" data-tab="setup">① Setup</button>
-    <button class="tab-btn" data-tab="load">② Load Analysis</button>
-    <button class="tab-btn" data-tab="circuits">③ Circuit Schedule</button>
-    <button class="tab-btn" data-tab="floorplan">④ Floor Plan</button>
-    <button class="tab-btn" data-tab="sld">⑤ Single-Line Diagram</button>
-    <button class="tab-btn" data-tab="bom">⑥ BOM &amp; Export</button>
+    <button class="tab-btn active" data-tab="setup">① Datos</button>
+    <button class="tab-btn" data-tab="load">② Análisis de Carga</button>
+    <button class="tab-btn" data-tab="circuits">③ Circuitos</button>
+    <button class="tab-btn" data-tab="floorplan">④ Planta</button>
+    <button class="tab-btn" data-tab="sld">⑤ Diagrama Unifilar</button>
+    <button class="tab-btn" data-tab="bom">⑥ Materiales / Exportar</button>
   </nav>
 </header>
 
 <main class="max-w-screen-2xl mx-auto px-4 py-5">
 
-<!-- ═══════════════════════════════════ TAB 1: SETUP ═══════════════════════════════════ -->
+<!-- ═══════════════════════════════════ TAB 1: DATOS ═══════════════════════════════════ -->
 <div class="tab-pane active" id="tab-setup">
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-    <!-- Project Info -->
+    <!-- Información del proyecto -->
     <div class="card">
-      <h2 class="font-bold text-slate-700 mb-4 flex items-center gap-2"><span class="text-lg">📋</span> Project Information</h2>
+      <h2 class="font-bold text-slate-700 mb-4 flex items-center gap-2"><span class="text-lg">📋</span> Información del Proyecto</h2>
       <div class="space-y-3">
-        <div><label>Project Name</label><input type="text" id="pi_name" value="Sample Residence" onchange="updateProjectInfo()"></div>
-        <div><label>Client / Owner</label><input type="text" id="pi_client" value="John Smith" onchange="updateProjectInfo()"></div>
-        <div><label>Address</label><input type="text" id="pi_address" value="123 Main Street" onchange="updateProjectInfo()"></div>
+        <div><label>Nombre del Proyecto</label><input type="text" id="pi_name" value="Residencia de Ejemplo" onchange="updateProjectInfo()"></div>
+        <div><label>Cliente / Propietario</label><input type="text" id="pi_client" value="Juan Torres" onchange="updateProjectInfo()"></div>
+        <div><label>Dirección</label><input type="text" id="pi_address" value="Calle Principal 123" onchange="updateProjectInfo()"></div>
         <div class="grid grid-cols-2 gap-3">
-          <div><label>Date</label><input type="date" id="pi_date" onchange="updateProjectInfo()"></div>
-          <div><label>Engineer / By</label><input type="text" id="pi_by" value="J. Torres" onchange="updateProjectInfo()"></div>
+          <div><label>Fecha</label><input type="date" id="pi_date" onchange="updateProjectInfo()"></div>
+          <div><label>Elaboró</label><input type="text" id="pi_by" value="J. Torres" onchange="updateProjectInfo()"></div>
         </div>
         <div class="grid grid-cols-2 gap-3">
-          <div><label>Service Size</label>
+          <div><label>Capacidad del Tablero</label>
             <select id="pi_service" onchange="updateProjectInfo()">
               <option>100A</option><option>150A</option><option selected>200A</option><option>400A</option>
             </select>
           </div>
-          <div><label>System Voltage</label>
+          <div><label>Tensión del Sistema</label>
             <select id="pi_voltage" onchange="updateProjectInfo()">
               <option selected>120/240V 1Ø</option><option>120/208V 3Ø</option>
             </select>
           </div>
         </div>
         <div>
-          <label>Total Area (m²)</label><input type="number" id="pi_aream" value="139" onchange="updateProjectInfo()">
+          <label>Área Total (m²)</label><input type="number" id="pi_aream" value="139" onchange="updateProjectInfo()">
         </div>
       </div>
     </div>
 
-    <!-- Room Manager -->
+    <!-- Lista de cuartos -->
     <div class="card lg:col-span-2">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="font-bold text-slate-700 flex items-center gap-2"><span class="text-lg">🏠</span> Room List</h2>
-        <button class="btn btn-primary btn-sm" onclick="openRoomModal()">+ Add Room</button>
+        <h2 class="font-bold text-slate-700 flex items-center gap-2"><span class="text-lg">🏠</span> Lista de Cuartos</h2>
+        <button class="btn btn-primary btn-sm" onclick="openRoomModal()">+ Agregar Cuarto</button>
       </div>
       <div class="overflow-x-auto">
         <table id="roomTable">
-          <thead><tr><th>#</th><th>Room Name</th><th>Type</th><th>L (m)</th><th>W (m)</th><th>H (m)</th><th>Doors</th><th>Area m²</th><th>Actions</th></tr></thead>
+          <thead><tr><th>#</th><th>Nombre</th><th>Tipo</th><th>L (m)</th><th>A (m)</th><th>H (m)</th><th>Puertas</th><th>Área m²</th><th>Acciones</th></tr></thead>
           <tbody id="roomTableBody"></tbody>
-          <tfoot><tr><td colspan="7" class="font-bold text-right pr-2 py-2 text-sm">Total Area:</td><td class="font-bold text-indigo-700" id="roomTotalArea">—</td><td></td></tr></tfoot>
+          <tfoot><tr><td colspan="7" class="font-bold text-right pr-2 py-2 text-sm">Área Total:</td><td class="font-bold text-indigo-700" id="roomTotalArea">—</td><td></td></tr></tfoot>
         </table>
       </div>
-      <!-- Appliance Manager -->
+      <!-- Electrodomésticos -->
       <div class="mt-5">
         <div class="flex items-center justify-between mb-3">
-          <h3 class="font-bold text-slate-700 flex items-center gap-2"><span>⚡</span> Dedicated Appliances</h3>
-          <button class="btn btn-ghost btn-sm" onclick="openApplianceModal()">+ Add Appliance</button>
+          <h3 class="font-bold text-slate-700 flex items-center gap-2"><span>⚡</span> Electrodomésticos Dedicados</h3>
+          <button class="btn btn-ghost btn-sm" onclick="openApplianceModal()">+ Agregar</button>
         </div>
         <table id="applianceTable">
-          <thead><tr><th>Appliance</th><th>VA / W</th><th>Volts</th><th>Amps</th><th>Dedicated</th><th>Run (m)</th><th>Actions</th></tr></thead>
+          <thead><tr><th>Aparato</th><th>VA / W</th><th>Volts</th><th>Amps</th><th>Dedicado</th><th>Dist. (m)</th><th>Acciones</th></tr></thead>
           <tbody id="applianceTableBody"></tbody>
         </table>
       </div>
     </div>
   </div>
-  <!-- quick-action bar -->
+  <!-- barra de acción rápida -->
   <div class="mt-4 flex gap-3 flex-wrap">
-    <button class="btn btn-success" onclick="runAll()">▶ Calculate All &amp; Generate Circuits</button>
-    <button class="btn btn-ghost" onclick="loadSampleData()">↺ Load Sample Data</button>
+    <button class="btn btn-success" onclick="runAll()">▶ Calcular y Generar Circuitos</button>
+    <button class="btn btn-ghost" onclick="loadSampleData()">↺ Cargar Datos de Ejemplo</button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════ TAB 2: LOAD ANALYSIS ═════════════════════════════ -->
+<!-- ═══════════════════════════════════ TAB 2: ANÁLISIS DE CARGA ═════════════════════════════ -->
 <div class="tab-pane" id="tab-load">
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
     <div class="stat-card border-l-4 border-blue-500">
       <div class="stat-value text-blue-600" id="la_totalVA">—</div>
-      <div class="stat-label">Total Connected Load (VA)</div>
+      <div class="stat-label">Carga Total Conectada (VA)</div>
     </div>
     <div class="stat-card border-l-4 border-indigo-500">
       <div class="stat-value text-indigo-600" id="la_demandVA">—</div>
-      <div class="stat-label">Demand Load (VA) after NEC 220.42</div>
+      <div class="stat-label">Carga de Demanda (VA)</div>
     </div>
     <div class="stat-card border-l-4 border-purple-500">
       <div class="stat-value text-purple-600" id="la_totalAmps">—</div>
-      <div class="stat-label">Total Service Amps Required</div>
+      <div class="stat-label">Corriente Total Requerida</div>
     </div>
     <div class="stat-card border-l-4 border-emerald-500">
       <div class="stat-value text-emerald-600" id="la_serviceAdequacy">—</div>
-      <div class="stat-label">Service Adequacy</div>
+      <div class="stat-label">Capacidad del Tablero</div>
     </div>
   </div>
+  <!-- Carga por cuarto -->
+  <div class="card mb-5">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="font-bold text-slate-700">Carga Estimada por Cuarto</h2>
+      <span class="text-xs text-gray-400">32.3 VA/m² alumbrado + contactos por perímetro</span>
+    </div>
+    <div class="overflow-x-auto">
+      <table id="roomLoadTable">
+        <thead><tr><th>Cuarto</th><th>Tipo</th><th>Área (m²)</th><th>Alumbrado VA</th><th>Contactos VA</th><th>Total VA</th><th>VA/m²</th></tr></thead>
+        <tbody id="roomLoadBody"></tbody>
+        <tfoot id="roomLoadFoot"></tfoot>
+      </table>
+    </div>
+    <p class="text-xs text-slate-500 mt-2">Los cuartos se agrupan en circuitos compartidos según capacidad del breaker (alumbrado: 1440 VA max, contactos: 1600 VA max).</p>
+  </div>
+
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-    <!-- Load Breakdown Table -->
+    <!-- Desglose de carga -->
     <div class="card">
-      <h2 class="font-bold text-slate-700 mb-3">Load Breakdown</h2>
+      <h2 class="font-bold text-slate-700 mb-3">Desglose de Carga</h2>
       <table id="loadBreakTable">
-        <thead><tr><th>Load Category</th><th>Calc. Method</th><th>VA</th><th>Demand %</th><th>Demand VA</th></tr></thead>
+        <thead><tr><th>Categoría</th><th>Método</th><th>VA</th><th>Factor Demanda</th><th>VA Demanda</th></tr></thead>
         <tbody id="loadBreakBody"></tbody>
         <tfoot id="loadBreakFoot"></tfoot>
       </table>
     </div>
     <!-- Charts -->
     <div class="card">
-      <h2 class="font-bold text-slate-700 mb-3">Load Distribution</h2>
+      <h2 class="font-bold text-slate-700 mb-3">Distribución de Carga</h2>
       <svg id="loadChart" width="100%" height="280" viewBox="0 0 400 280"></svg>
       <div class="mt-4">
-        <h3 class="font-bold text-sm text-slate-600 mb-2">Phase Balance</h3>
+        <h3 class="font-bold text-sm text-slate-600 mb-2">Balance de Fases</h3>
         <div id="phaseBalanceDisplay"></div>
       </div>
     </div>
@@ -189,140 +205,139 @@ tr:hover td{background:#f8fafc}
   <!-- Voltage Drop Reference + Conductor Estimator -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
     <div class="card">
-      <h2 class="font-bold text-slate-700 mb-3">Conductor Sizing Reference (NEC Table 310.16 — 60°C Cu)</h2>
+      <h2 class="font-bold text-slate-700 mb-3">Referencia de Conductores (NEC/NOM — Cu 60°C)</h2>
       <div class="overflow-x-auto">
         <table>
-          <thead><tr><th>AWG</th><th>Ampacity</th><th>Ω/km</th><th>Typical Use</th><th>Max Run @ 3% VD / 15A</th><th>Max Run @ 3% VD / 20A</th></tr></thead>
+          <thead><tr><th>AWG</th><th>Capacidad</th><th>Ω/km</th><th>Uso Típico</th><th>Dist. máx @ 3% CD / 15A</th><th>Dist. máx @ 3% CD / 20A</th></tr></thead>
           <tbody>
-            <tr><td class="font-bold text-blue-700">14 AWG</td><td>15 A</td><td>10.30</td><td>Lighting / 15A</td><td id="vd_14_15">—</td><td class="text-gray-400">N/A</td></tr>
-            <tr><td class="font-bold text-indigo-700">12 AWG</td><td>20 A</td><td>6.50</td><td>General outlets / 20A</td><td id="vd_12_15">—</td><td id="vd_12_20">—</td></tr>
-            <tr><td class="font-bold text-teal-700">10 AWG</td><td>30 A</td><td>4.07</td><td>Dryer / small AC / 30A</td><td>—</td><td id="vd_10_20">—</td></tr>
-            <tr><td class="font-bold text-orange-700">8 AWG</td><td>40 A</td><td>2.55</td><td>Range / 40A</td><td>—</td><td>—</td></tr>
-            <tr><td class="font-bold text-red-700">6 AWG</td><td>55 A</td><td>1.61</td><td>Central AC / 50A</td><td>—</td><td>—</td></tr>
+            <tr><td class="font-bold text-blue-700">14 AWG</td><td>15 A</td><td>10.30</td><td>Alumbrado / 15A</td><td id="vd_14_15">—</td><td class="text-gray-400">N/A</td></tr>
+            <tr><td class="font-bold text-indigo-700">12 AWG</td><td>20 A</td><td>6.50</td><td>Contactos generales / 20A</td><td id="vd_12_15">—</td><td id="vd_12_20">—</td></tr>
+            <tr><td class="font-bold text-teal-700">10 AWG</td><td>30 A</td><td>4.07</td><td>Secadora / A/A pequeño / 30A</td><td>—</td><td id="vd_10_20">—</td></tr>
+            <tr><td class="font-bold text-orange-700">8 AWG</td><td>40 A</td><td>2.55</td><td>Estufa / 40A</td><td>—</td><td>—</td></tr>
+            <tr><td class="font-bold text-red-700">6 AWG</td><td>55 A</td><td>1.61</td><td>A/C central / 50A</td><td>—</td><td>—</td></tr>
           </tbody>
         </table>
       </div>
-      <!-- VD Formula -->
       <div class="mt-3 bg-slate-50 rounded p-3 text-xs text-slate-600 font-mono">
-        VD = (2 × L × R × I) / 1000 &nbsp;|&nbsp; VD% = VD / V × 100 &nbsp;|&nbsp; NEC max 3% branch
+        CD = (2 × L × R × I) / 1000 &nbsp;|&nbsp; CD% = CD / V × 100 &nbsp;|&nbsp; Máx. 3% en circuitos derivados
       </div>
     </div>
 
-    <!-- Interactive Conductor Estimator -->
+    <!-- Estimador de Conductores -->
     <div class="card border-2 border-indigo-200">
       <h2 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
-        <span class="text-xl">🔧</span> Interactive Conductor &amp; Cable Estimator
+        <span class="text-xl">🔧</span> Estimador de Conductor y Calibre
       </h2>
       <div class="space-y-3">
         <div class="grid grid-cols-3 gap-3">
           <div>
-            <label>Load Input</label>
-            <input type="number" id="ce_val" value="1500" placeholder="VA or A" oninput="calcConductor()">
+            <label>Carga</label>
+            <input type="number" id="ce_val" value="1500" placeholder="VA o A" oninput="calcConductor()">
           </div>
           <div>
-            <label>Input Type</label>
+            <label>Tipo de Entrada</label>
             <select id="ce_mode" onchange="calcConductor()">
-              <option value="va">VA (Volt-Amps)</option>
-              <option value="amps">Amps (A)</option>
+              <option value="va">VA (Volt-Amperes)</option>
+              <option value="amps">Amperes (A)</option>
               <option value="watts">Watts (W)</option>
             </select>
           </div>
           <div>
-            <label>Voltage</label>
+            <label>Tensión</label>
             <select id="ce_volts" onchange="calcConductor()">
-              <option value="120">120V (1-phase)</option>
-              <option value="240">240V (2-phase)</option>
-              <option value="208">208V (3-phase)</option>
+              <option value="120">120V (monofásico)</option>
+              <option value="240">240V (bifásico)</option>
+              <option value="208">208V (trifásico)</option>
             </select>
           </div>
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label>One-way Run Length (m)</label>
+            <label>Longitud del tramo (m)</label>
             <input type="number" id="ce_run" value="9" oninput="calcConductor()">
           </div>
           <div>
-            <label>Max Voltage Drop %</label>
+            <label>Caída de Tensión máx. %</label>
             <select id="ce_maxvd" onchange="calcConductor()">
-              <option value="3" selected>3% (NEC 210.19 recommended)</option>
-              <option value="5">5% (NEC 215.2 max)</option>
-              <option value="2">2% (stringent)</option>
+              <option value="3" selected>3% (recomendado NEC/NOM)</option>
+              <option value="5">5% (máximo NEC 215.2)</option>
+              <option value="2">2% (estricto)</option>
             </select>
           </div>
         </div>
       </div>
       <div id="ce_results" class="mt-4 rounded-lg bg-slate-50 p-4 border border-slate-200 min-h-[120px]">
-        <p class="text-sm text-slate-400 italic">Enter load values above to calculate conductor sizing…</p>
+        <p class="text-sm text-slate-400 italic">Ingresa los valores de carga para calcular el calibre del conductor…</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════ TAB 3: CIRCUIT SCHEDULE ══════════════════════════ -->
+<!-- ═══════════════════════════════════ TAB 3: CIRCUITOS ══════════════════════════ -->
 <div class="tab-pane" id="tab-circuits">
   <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
     <div class="flex gap-3 flex-wrap">
-      <div class="stat-card px-4 py-2"><span class="font-bold text-lg text-indigo-700" id="cs_totalCircuits">—</span> <span class="text-sm text-gray-500">Total Circuits</span></div>
-      <div class="stat-card px-4 py-2"><span class="font-bold text-lg text-blue-700" id="cs_phaseA">—</span> <span class="text-sm text-gray-500">Phase A Load</span></div>
-      <div class="stat-card px-4 py-2"><span class="font-bold text-lg text-red-700" id="cs_phaseB">—</span> <span class="text-sm text-gray-500">Phase B Load</span></div>
-      <div class="stat-card px-4 py-2"><span class="font-bold text-lg text-emerald-700" id="cs_panelRec">—</span> <span class="text-sm text-gray-500">Panel Spaces</span></div>
+      <div class="stat-card px-4 py-2"><span class="font-bold text-lg text-indigo-700" id="cs_totalCircuits">—</span> <span class="text-sm text-gray-500">Total Circuitos</span></div>
+      <div class="stat-card px-4 py-2"><span class="font-bold text-lg text-blue-700" id="cs_phaseA">—</span> <span class="text-sm text-gray-500">Carga Fase A</span></div>
+      <div class="stat-card px-4 py-2"><span class="font-bold text-lg text-red-700" id="cs_phaseB">—</span> <span class="text-sm text-gray-500">Carga Fase B</span></div>
+      <div class="stat-card px-4 py-2"><span class="font-bold text-lg text-emerald-700" id="cs_panelRec">—</span> <span class="text-sm text-gray-500">Espacios en Tablero</span></div>
     </div>
     <div class="flex gap-2">
       <select class="border border-gray-300 rounded px-2 py-1 text-sm" id="filterPhase" onchange="filterCircuits()">
-        <option value="">All Phases</option><option value="A">Phase A</option><option value="B">Phase B</option><option value="A+B">240V (A+B)</option>
+        <option value="">Todas las Fases</option><option value="A">Fase A</option><option value="B">Fase B</option><option value="A+B">240V (A+B)</option>
       </select>
       <select class="border border-gray-300 rounded px-2 py-1 text-sm" id="filterProt" onchange="filterCircuits()">
-        <option value="">All Protection</option><option value="GFCI">GFCI</option><option value="AFCI">AFCI</option><option value="Standard">Standard</option>
+        <option value="">Toda Protección</option><option value="GFCI">GFCI</option><option value="AFCI">AFCI</option><option value="Standard">Estándar</option>
       </select>
     </div>
   </div>
   <div class="card overflow-x-auto">
     <table id="circuitTable">
       <thead><tr>
-        <th>CKT #</th><th>Type</th><th>Description</th>
-        <th>VA</th><th title="Amps">A</th><th>Breaker</th>
-        <th>AWG</th><th>Run (m)</th>
-        <th title="Voltage Drop %">VD %</th>
-        <th>Load</th>
-        <th>Phase</th><th>Protection</th><th>Status</th>
+        <th>CKT #</th><th>Tipo</th><th>Descripción</th>
+        <th>VA</th><th title="Amperes">A</th><th>Breaker</th>
+        <th>AWG</th><th>Dist. (m)</th>
+        <th title="Caída de Tensión %">CD %</th>
+        <th>Carga</th>
+        <th>Fase</th><th>Protección</th><th>Estado</th>
       </tr></thead>
       <tbody id="circuitTableBody"></tbody>
     </table>
   </div>
-  <!-- Voltage Drop Analysis Chart -->
+  <!-- Gráfica de análisis de circuitos -->
   <div class="card mt-5">
-    <h3 class="font-bold text-slate-700 mb-3">Circuit Load Analysis — Load vs Breaker Capacity</h3>
+    <h3 class="font-bold text-slate-700 mb-3">Análisis de Carga — Carga vs Capacidad del Breaker</h3>
     <div id="circuitLoadChart" class="space-y-1.5 max-h-96 overflow-y-auto pr-1"></div>
   </div>
   <div class="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-800">
-    <strong>NEC 210.19(A) Note:</strong> Voltage drop ≤3% for branch circuits recommended. Values shown use room default run lengths. GFCI required: bathrooms, kitchens, garages, outdoors. AFCI required: bedrooms, living areas, hallways (NEC 210.12).
+    <strong>Nota NEC/NOM:</strong> Caída de tensión ≤3% recomendada en circuitos derivados. GFCI requerido: baños, cocinas, garages, exteriores. AFCI requerido: recámaras, salas, pasillos.
   </div>
 </div>
 
-<!-- ═══════════════════════════════════ TAB 4: FLOOR PLAN ════════════════════════════════ -->
+<!-- ═══════════════════════════════════ TAB 4: PLANTA ════════════════════════════════ -->
 <div class="tab-pane" id="tab-floorplan">
   <div class="flex gap-4 flex-col xl:flex-row">
-    <!-- Palette -->
+    <!-- Paleta -->
     <div class="w-full xl:w-48 flex-shrink-0">
       <div class="card">
-        <div class="font-bold text-sm text-slate-700 mb-3">Symbol Palette</div>
+        <div class="font-bold text-sm text-slate-700 mb-3">Paleta de Símbolos</div>
         <div id="symbolPalette" class="grid grid-cols-3 xl:grid-cols-2 gap-2"></div>
-        <div class="mt-4 font-bold text-sm text-slate-700 mb-2">Rooms</div>
+        <div class="mt-4 font-bold text-sm text-slate-700 mb-2">Cuartos</div>
         <div id="fpRoomList" class="space-y-1 text-xs max-h-64 overflow-y-auto"></div>
         <div class="mt-3 space-y-2">
-          <button class="btn btn-primary w-full btn-sm" onclick="fpAutoPopulate()">✨ Auto-Populate NEC</button>
-          <button class="btn btn-ghost w-full btn-sm" onclick="fpClear()">🗑 Clear Symbols</button>
-          <button class="btn btn-ghost w-full btn-sm" onclick="fpToggleRuns()">🔌 Toggle Home Runs</button>
-          <button class="btn btn-ghost w-full btn-sm" onclick="fpAutoLayout()">📐 Auto Layout</button>
+          <button class="btn btn-primary w-full btn-sm" onclick="fpAutoPopulate()">✨ Auto-poblar</button>
+          <button class="btn btn-ghost w-full btn-sm" onclick="fpClear()">🗑 Limpiar Símbolos</button>
+          <button class="btn btn-ghost w-full btn-sm" onclick="fpToggleRuns()">🔌 Mostrar/Ocultar Acometidas</button>
+          <button class="btn btn-ghost w-full btn-sm" onclick="fpAutoLayout()">📐 Auto Distribuir</button>
         </div>
       </div>
     </div>
-    <!-- Canvas Area -->
+    <!-- Área del canvas -->
     <div class="flex-1">
       <div class="card p-0 overflow-hidden">
-        <!-- Toolbar -->
+        <!-- Barra de herramientas -->
         <div class="bg-slate-100 border-b px-3 py-2 flex items-center gap-3 flex-wrap text-xs">
-          <span class="font-bold text-slate-600">Floor Plan Editor</span>
+          <span class="font-bold text-slate-600">Editor de Planta</span>
           <div class="flex gap-1 ml-auto">
             <button class="btn btn-ghost btn-sm" onclick="fpZoom(1.2)">🔍+</button>
             <button class="btn btn-ghost btn-sm" onclick="fpZoom(0.83)">🔍−</button>
@@ -346,23 +361,16 @@ tr:hover td{background:#f8fafc}
             <g id="fpRooms"></g>
             <g id="fpHomeRuns" opacity="0.5"></g>
             <g id="fpSymbols"></g>
-            <!-- Panel default position -->
-            <g id="fpPanel" transform="translate(30,360)" style="cursor:move">
-              <rect width="50" height="80" fill="#1e293b" rx="4" stroke="#0f172a" stroke-width="2"/>
-              <rect x="5" y="5" width="40" height="70" fill="#334155" rx="2"/>
-              <text x="25" y="28" text-anchor="middle" fill="#f59e0b" font-size="8" font-weight="bold">LOAD</text>
-              <text x="25" y="40" text-anchor="middle" fill="#f59e0b" font-size="8" font-weight="bold">CENTER</text>
-              <text x="25" y="55" text-anchor="middle" fill="#94a3b8" font-size="7">200A</text>
-              <text x="25" y="67" text-anchor="middle" fill="#94a3b8" font-size="6">120/240V</text>
-            </g>
+            <!-- Tablero general — posición y contenido gestionados por FP.renderPanel() -->
+            <g id="fpPanel" style="cursor:move"></g>
           </svg>
         </div>
         <!-- Legend -->
         <div class="bg-slate-50 border-t px-3 py-2 flex flex-wrap gap-4 text-xs text-slate-600">
-          <span class="font-bold">Legend:</span>
-          <span>⚪ Outlet</span><span class="text-amber-600">⚪ GFCI</span><span>🔘 Lighting</span>
-          <span>S Switch</span><span>F Fan</span><span class="text-teal-600">⚪ 240V</span>
-          <span class="text-slate-400">Click palette then click canvas to place · Drag to move · Right-click to delete</span>
+          <span class="font-bold">Leyenda:</span>
+          <span>⚪ Contacto</span><span class="text-amber-600">⚪ GFCI</span><span>🔘 Luminaria</span>
+          <span>S Apagador</span><span>F Ventilador</span><span class="text-teal-600">⚪ 240V</span>
+          <span class="text-slate-400">Selecciona símbolo → clic en plano para colocar · Arrastra para mover · Clic derecho para borrar · Arrastra el tablero para reubicarlo</span>
         </div>
       </div>
     </div>
@@ -479,57 +487,57 @@ tr:hover td{background:#f8fafc}
 <!-- ═══════════════════════════════════ MODALS ═══════════════════════════════════════════ -->
 <div id="roomModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
   <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-2xl">
-    <h3 class="font-bold text-lg text-slate-800 mb-4" id="roomModalTitle">Add Room</h3>
+    <h3 class="font-bold text-lg text-slate-800 mb-4" id="roomModalTitle">Agregar Cuarto</h3>
     <div class="space-y-3">
-      <div><label>Room Name</label><input type="text" id="rm_name" placeholder="e.g. Master Bedroom"></div>
-      <div><label>Room Type</label>
+      <div><label>Nombre del Cuarto</label><input type="text" id="rm_name" placeholder="ej. Recámara Principal"></div>
+      <div><label>Tipo de Cuarto</label>
         <select id="rm_type">
-          <option value="living">Living Room</option><option value="kitchen">Kitchen</option>
-          <option value="dining">Dining Room</option><option value="bedroom">Bedroom</option>
-          <option value="bathroom">Bathroom</option><option value="garage">Garage</option>
-          <option value="laundry">Laundry Room</option><option value="office">Office/Study</option>
-          <option value="hallway">Hallway</option><option value="basement">Basement</option>
-          <option value="outdoor">Outdoor/Patio</option><option value="other">Other</option>
+          <option value="living">Sala</option><option value="kitchen">Cocina</option>
+          <option value="dining">Comedor</option><option value="bedroom">Recámara</option>
+          <option value="bathroom">Baño</option><option value="garage">Garage</option>
+          <option value="laundry">Lavandería</option><option value="office">Oficina/Estudio</option>
+          <option value="hallway">Pasillo</option><option value="basement">Sótano</option>
+          <option value="outdoor">Exterior/Patio</option><option value="other">Otro</option>
         </select>
       </div>
       <div class="grid grid-cols-3 gap-3">
-        <div><label>Length (m)</label><input type="number" id="rm_len" value="3.7" step="0.1"></div>
-        <div><label>Width (m)</label><input type="number" id="rm_wid" value="3.0" step="0.1"></div>
-        <div><label>Height (m)</label><input type="number" id="rm_hgt" value="2.7" step="0.1"></div>
+        <div><label>Largo (m)</label><input type="number" id="rm_len" value="3.7" step="0.1"></div>
+        <div><label>Ancho (m)</label><input type="number" id="rm_wid" value="3.0" step="0.1"></div>
+        <div><label>Alto (m)</label><input type="number" id="rm_hgt" value="2.7" step="0.1"></div>
       </div>
       <div class="grid grid-cols-2 gap-3">
-        <div><label>Doors</label><input type="number" id="rm_doors" value="1" min="0"></div>
-        <div><label>Default Run (m)</label><input type="number" id="rm_run" value="9" step="0.5"></div>
+        <div><label>Puertas</label><input type="number" id="rm_doors" value="1" min="0"></div>
+        <div><label>Distancia al tablero (m)</label><input type="number" id="rm_run" value="9" step="0.5"></div>
       </div>
     </div>
     <div class="flex gap-3 mt-4">
-      <button class="btn btn-primary flex-1" onclick="saveRoom()">Save Room</button>
-      <button class="btn btn-ghost flex-1" onclick="closeModal('roomModal')">Cancel</button>
+      <button class="btn btn-primary flex-1" onclick="saveRoom()">Guardar</button>
+      <button class="btn btn-ghost flex-1" onclick="closeModal('roomModal')">Cancelar</button>
     </div>
   </div>
 </div>
 
 <div id="appModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
   <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-2xl">
-    <h3 class="font-bold text-lg text-slate-800 mb-4" id="appModalTitle">Add Appliance</h3>
+    <h3 class="font-bold text-lg text-slate-800 mb-4" id="appModalTitle">Agregar Electrodoméstico</h3>
     <div class="space-y-3">
-      <div><label>Appliance Name</label><input type="text" id="ap_name" placeholder="e.g. Electric Dryer"></div>
+      <div><label>Nombre del Aparato</label><input type="text" id="ap_name" placeholder="ej. Secadora Eléctrica"></div>
       <div class="grid grid-cols-2 gap-3">
         <div><label>VA / Watts</label><input type="number" id="ap_va" value="1500"></div>
-        <div><label>Voltage</label>
+        <div><label>Tensión</label>
           <select id="ap_volts"><option value="120">120V</option><option value="240">240V</option></select>
         </div>
       </div>
       <div class="grid grid-cols-2 gap-3">
-        <div><label>Dedicated Circuit</label>
-          <select id="ap_dedicated"><option value="true">Yes</option><option value="false">No</option></select>
+        <div><label>Circuito Dedicado</label>
+          <select id="ap_dedicated"><option value="true">Sí</option><option value="false">No</option></select>
         </div>
-        <div><label>Wire Run (m)</label><input type="number" id="ap_run" value="12" step="0.5"></div>
+        <div><label>Distancia (m)</label><input type="number" id="ap_run" value="12" step="0.5"></div>
       </div>
     </div>
     <div class="flex gap-3 mt-4">
-      <button class="btn btn-primary flex-1" onclick="saveAppliance()">Save</button>
-      <button class="btn btn-ghost flex-1" onclick="closeModal('appModal')">Cancel</button>
+      <button class="btn btn-primary flex-1" onclick="saveAppliance()">Guardar</button>
+      <button class="btn btn-ghost flex-1" onclick="closeModal('appModal')">Cancelar</button>
     </div>
   </div>
 </div>
@@ -654,41 +662,87 @@ function generateCircuits() {
     num++;
   };
 
-  // Per-room circuits
-  for(const r of State.rooms) {
-    const area = r.l*r.w; // m²
-    const run = r.run||9;  // metres
+  const kitchens  = State.rooms.filter(r=>/kitchen/i.test(r.type));
+  const baths     = State.rooms.filter(r=>/bath/i.test(r.type));
+  const laundries = State.rooms.filter(r=>/laundry/i.test(r.type));
+  const garages   = State.rooms.filter(r=>/garage/i.test(r.type));
+  const general   = State.rooms.filter(r=>!/kitchen|bath|laundry|garage/i.test(r.type));
 
-    // Lighting: NEC 220.12 → 3 VA/ft² = 32.29 VA/m²
-    const lghtVA = Math.min(area*32.29, 1440);
-    add('LIGHTING', r.name+' — Lighting', lghtVA, 120, false, r.type, run);
-
-    if(/kitchen/i.test(r.type)) {
-      add('SM_APPL', r.name+' — Small Appliance #1', 1500, 120, false, r.type, run);
-      add('SM_APPL', r.name+' — Small Appliance #2', 1500, 120, false, r.type, run);
-    } else if(/bath/i.test(r.type)) {
-      add('OUTLETS', r.name+' — GFCI Outlets', 900, 120, false, r.type, run);
-    } else if(!/laundry/i.test(r.type)) {
-      const nOut = EM.outletsForRoom(r.l, r.w);
-      add('OUTLETS', r.name+' — General Outlets', Math.min(nOut*180,1440), 120, false, r.type, run);
+  // Bin-pack lighting circuits (max 1440 VA / 15A each)
+  function binLight(rooms, fallbackType) {
+    const bins = [];
+    for(const r of rooms) {
+      const rva = Math.min(r.l*r.w*32.29, 1440);
+      if(rva <= 0) continue;
+      let placed = false;
+      for(const b of bins) {
+        if(b.va + rva <= 1440) { b.rooms.push(r); b.va += rva; b.run = Math.max(b.run, r.run||9); placed = true; break; }
+      }
+      if(!placed) bins.push({rooms:[r], va:rva, run:r.run||9});
     }
-
-    if(/laundry/i.test(r.type)) {
-      add('LAUNDRY', r.name+' — Washer', 1500, 120, true, r.type, run);
-    }
-    if(/garage/i.test(r.type)) {
-      add('OUTLETS', r.name+' — GFCI Outlets', 900, 120, false, r.type, run);
+    for(const b of bins) {
+      const desc = b.rooms.map(r=>r.name).join(' & ')+' — Alumbrado';
+      const rtype = b.rooms.find(r=>EM.needsAFCI(r.type))?.type || fallbackType;
+      add('LIGHTING', desc, Math.round(b.va), 120, false, rtype, b.run);
     }
   }
+  binLight(general, 'other');
+  for(const r of [...kitchens,...baths,...laundries,...garages]) {
+    const rva = Math.round(Math.min(r.l*r.w*32.29, 1440));
+    if(rva > 50) add('LIGHTING', r.name+' — Alumbrado', rva, 120, false, r.type, r.run||9);
+  }
 
-  // Dedicated appliances
+  // Cocina: 2 circuitos para pequeños aparatos (obligatorio)
+  if(kitchens.length > 0) {
+    const kr = kitchens[0];
+    add('SM_APPL', 'Cocina — Pequeños Aparatos 1', 1500, 120, false, 'kitchen', kr.run||9);
+    add('SM_APPL', 'Cocina — Pequeños Aparatos 2', 1500, 120, false, 'kitchen', kr.run||9);
+  }
+
+  // Baños: agrupar de 2 en 2 por circuito GFCI
+  for(let i=0; i<baths.length; i+=2) {
+    const grp = baths.slice(i, i+2);
+    add('OUTLETS', grp.map(r=>r.name).join(' & ')+' — Contactos GFCI',
+      grp.length * 900, 120, false, 'bathroom', Math.max(...grp.map(r=>r.run||9)));
+  }
+
+  // Lavandería: circuito dedicado
+  for(const r of laundries) add('LAUNDRY', r.name+' — Lavadora (Dedicado)', 1500, 120, true, r.type, r.run||9);
+
+  // Garage: circuito GFCI
+  if(garages.length > 0) {
+    add('OUTLETS', 'Garage — Contactos GFCI',
+      Math.min(garages.length*900, 1800), 120, false, 'garage',
+      Math.max(...garages.map(r=>r.run||9)));
+  }
+
+  // Bin-pack outlet circuits (max 1600 VA / 20A each) — cuartos generales
+  const outBins = [];
+  for(const r of general) {
+    const rva = Math.min(EM.outletsForRoom(r.l,r.w)*180, 1440);
+    if(rva <= 0) continue;
+    let placed = false;
+    for(const b of outBins) {
+      if(b.va + rva <= 1600) { b.rooms.push(r); b.va += rva; b.run = Math.max(b.run, r.run||9); placed = true; break; }
+    }
+    if(!placed) outBins.push({rooms:[r], va:rva, run:r.run||9});
+  }
+  for(const b of outBins) {
+    const rtype = b.rooms.find(r=>EM.needsGFCI(r.type))?.type
+               || b.rooms.find(r=>EM.needsAFCI(r.type))?.type
+               || b.rooms[0].type;
+    add('OUTLETS', b.rooms.map(r=>r.name).join(' & ')+' — Contactos',
+      Math.round(b.va), 120, false, rtype, b.run);
+  }
+
+  // Electrodomésticos dedicados
   for(const a of State.appliances) {
     if(a.dedicated==='true'||a.dedicated===true) {
       add('APPLIANCE', a.name, a.va, a.volts, true, a.roomType||'', a.run||12);
     }
   }
 
-  // Phase balance
+  // Balance de fases
   balancePhases(circuits);
   State.circuits = circuits;
   return circuits;
@@ -712,22 +766,22 @@ function calcLoad() {
   let total = 0;
 
   const area_m2 = parseFloat(document.getElementById('pi_aream').value)||139;
-  const lghtVA = area_m2 * 32.29; // NEC 220.12: 3 VA/ft² = 32.29 VA/m²
-  items.push({cat:'General Lighting (NEC 220.12)', method:`${area_m2} m² × 32.3 VA/m²`, va:lghtVA, df:1});
+  const lghtVA = area_m2 * 32.29; // 3 VA/ft² = 32.29 VA/m²
+  items.push({cat:'Alumbrado General', method:`${area_m2} m² × 32.3 VA/m²`, va:lghtVA, df:1});
   total += lghtVA;
 
   const hasKitchen = State.rooms.some(r=>/kitchen/i.test(r.type));
   const saVA = hasKitchen ? 3000 : 0;
-  if(hasKitchen) items.push({cat:'Small Appliance Circuits (NEC 210.52B)', method:'2 × 1,500 VA', va:saVA, df:1});
+  if(hasKitchen) items.push({cat:'Circuitos Pequeños Aparatos (Cocina)', method:'2 × 1,500 VA', va:saVA, df:1});
   total += saVA;
 
   const hasLaundry = State.rooms.some(r=>/laundry/i.test(r.type));
   const lndVA = hasLaundry ? 1500 : 0;
-  if(hasLaundry) items.push({cat:'Laundry Circuit (NEC 210.52F)', method:'1 × 1,500 VA', va:lndVA, df:1});
+  if(hasLaundry) items.push({cat:'Circuito Lavandería', method:'1 × 1,500 VA', va:lndVA, df:1});
   total += lndVA;
 
   for(const a of State.appliances) {
-    items.push({cat:a.name, method:'Nameplate', va:+a.va, df:1});
+    items.push({cat:a.name, method:'Placa nominal', va:+a.va, df:1});
     total += +a.va;
   }
 
@@ -771,7 +825,7 @@ function renderApplianceTable() {
     const tr = document.createElement('tr');
     tr.innerHTML=`<td class="font-medium">${a.name}</td><td>${a.va}</td>
       <td>${a.volts}V</td><td>${amps}A</td>
-      <td>${(a.dedicated==='true'||a.dedicated===true)?'<span class="badge badge-ok">Yes</span>':'No'}</td>
+      <td>${(a.dedicated==='true'||a.dedicated===true)?'<span class="badge badge-ok">Sí</span>':'No'}</td>
       <td>${a.run||40}</td>
       <td class="flex gap-1">
         <button class="btn btn-ghost btn-sm" onclick="editAppl('${a.id}')">✏</button>
@@ -786,8 +840,49 @@ function renderLoadAnalysis() {
   document.getElementById('la_totalVA').textContent = Math.round(total).toLocaleString()+' VA';
   document.getElementById('la_demandVA').textContent = Math.round(demand).toLocaleString()+' VA';
   document.getElementById('la_totalAmps').textContent = serviceAmps.toFixed(1)+' A';
-  document.getElementById('la_serviceAdequacy').textContent = adequate?'✓ Adequate':'⚠ Overloaded';
+  document.getElementById('la_serviceAdequacy').textContent = adequate?'✓ Adecuado':'⚠ Sobrecargado';
   document.getElementById('la_serviceAdequacy').className = 'stat-value '+(adequate?'text-emerald-600':'text-red-600');
+
+  // Tabla por cuarto
+  const rBody = document.getElementById('roomLoadBody');
+  const rFoot = document.getElementById('roomLoadFoot');
+  if(rBody) {
+    rBody.innerHTML = '';
+    let rTotalLght=0, rTotalOut=0, rTotalAll=0, rTotalArea=0;
+    const typeLabels = {living:'Sala',kitchen:'Cocina',bedroom:'Recámara',bathroom:'Baño',
+      garage:'Garage',laundry:'Lavandería',dining:'Comedor',office:'Oficina',
+      hallway:'Pasillo',basement:'Sótano',outdoor:'Exterior',other:'Otro'};
+    for(const r of State.rooms) {
+      const area = +(r.l*r.w).toFixed(2);
+      const lghtVA = Math.round(Math.min(area*32.29, 1440));
+      const nOut = EM.outletsForRoom(r.l, r.w);
+      let outVA = 0;
+      if(/kitchen/i.test(r.type)) outVA = 3000;
+      else if(/bath/i.test(r.type)) outVA = 900;
+      else if(/laundry/i.test(r.type)) outVA = 1500;
+      else if(/garage/i.test(r.type)) outVA = 900;
+      else outVA = Math.round(Math.min(nOut*180, 1440));
+      const totalVA = lghtVA + outVA;
+      const vapm2 = area > 0 ? (totalVA/area).toFixed(1) : '—';
+      rTotalLght += lghtVA; rTotalOut += outVA; rTotalAll += totalVA; rTotalArea += area;
+      const tLabel = typeLabels[r.type]||r.type;
+      rBody.innerHTML+=`<tr>
+        <td class="font-medium">${r.name}</td>
+        <td><span class="capitalize text-xs text-gray-500">${tLabel}</span></td>
+        <td class="text-right">${area}</td>
+        <td class="text-right text-blue-700">${lghtVA.toLocaleString()}</td>
+        <td class="text-right text-amber-700">${outVA.toLocaleString()}</td>
+        <td class="text-right font-semibold">${totalVA.toLocaleString()}</td>
+        <td class="text-right text-gray-500">${vapm2}</td></tr>`;
+    }
+    if(rFoot) rFoot.innerHTML=`<tr class="bg-slate-50 font-bold">
+      <td colspan="2">TOTAL</td>
+      <td class="text-right">${rTotalArea.toFixed(1)} m²</td>
+      <td class="text-right text-blue-700">${rTotalLght.toLocaleString()}</td>
+      <td class="text-right text-amber-700">${rTotalOut.toLocaleString()}</td>
+      <td class="text-right">${rTotalAll.toLocaleString()} VA</td>
+      <td class="text-right">${rTotalArea>0?(rTotalAll/rTotalArea).toFixed(1):'—'}</td></tr>`;
+  }
 
   const tbody = document.getElementById('loadBreakBody');
   tbody.innerHTML='';
@@ -795,12 +890,11 @@ function renderLoadAnalysis() {
     const dVA = EM.demandFactor(it.va);
     tbody.innerHTML+=`<tr>
       <td>${it.cat}</td><td class="text-gray-500 text-xs">${it.method}</td>
-      <td class="font-semibold">${it.va.toLocaleString()}</td>
+      <td class="font-semibold">${Math.round(it.va).toLocaleString()}</td>
       <td class="text-gray-500">NEC 220.42</td>
       <td class="font-semibold text-indigo-700">${Math.round(dVA).toLocaleString()}</td></tr>`;
   }
 
-  const df1 = items.filter(i=>i.va>0).reduce((s,i)=>s+i.va,0);
   document.getElementById('loadBreakFoot').innerHTML=`
     <tr class="bg-slate-50 font-bold">
       <td colspan="2">TOTAL</td>
@@ -809,7 +903,7 @@ function renderLoadAnalysis() {
       <td class="text-indigo-700">${Math.round(demand).toLocaleString()} VA → ${serviceAmps.toFixed(1)} A</td>
     </tr>`;
 
-  // VD reference
+  // Referencia caída de tensión
   document.getElementById('vd_14_15').textContent = EM.maxRunAt3pct(14,15)+' m';
   document.getElementById('vd_12_15').textContent = EM.maxRunAt3pct(12,15)+' m';
   document.getElementById('vd_12_20').textContent = EM.maxRunAt3pct(12,20)+' m';
@@ -854,7 +948,7 @@ function renderPhaseBalance() {
       <div class="flex items-center gap-2"><span class="w-16 text-xs font-bold text-red-700">Phase B</span>
         <div class="flex-1 bg-red-100 rounded"><div class="phase-bar bg-red-500" style="width:${(phB/max*100).toFixed(1)}%"></div></div>
         <span class="w-20 text-right text-xs font-mono">${Math.round(phB).toLocaleString()} VA</span></div>
-      <div class="text-xs text-gray-500">Imbalance: ${Math.round(diff).toLocaleString()} VA (${((diff/max)*100).toFixed(1)}%) ${diff/max<0.1?'<span class="text-emerald-600 font-bold">✓ Well balanced</span>':'<span class="text-amber-600 font-bold">⚠ Review balance</span>'}</div>
+      <div class="text-xs text-gray-500">Desbalance: ${Math.round(diff).toLocaleString()} VA (${((diff/max)*100).toFixed(1)}%) ${diff/max<0.1?'<span class="text-emerald-600 font-bold">✓ Bien balanceado</span>':'<span class="text-amber-600 font-bold">⚠ Revisar balance</span>'}</div>
     </div>`;
 }
 
@@ -869,7 +963,7 @@ function renderCircuitSchedule() {
   document.getElementById('cs_totalCircuits').textContent = circuits.length;
   document.getElementById('cs_phaseA').textContent = Math.round(la).toLocaleString()+' VA';
   document.getElementById('cs_phaseB').textContent = Math.round(lb).toLocaleString()+' VA';
-  document.getElementById('cs_panelRec').textContent = panelSpaces+'-Space';
+  document.getElementById('cs_panelRec').textContent = panelSpaces+' espacios';
 
   filterCircuits();
 }
@@ -890,7 +984,7 @@ function filterCircuits() {
     const phClass   = c.phase==='A'?'badge-a':c.phase==='B'?'badge-b':'badge-240';
     const protClass = c.prot==='GFCI'?'badge-gfci':c.prot==='AFCI'?'badge-afci':'';
     const statusClass = c.vd>5?'badge-crit':c.vd>3?'badge-warn':'badge-ok';
-    const statusText  = c.vd>5?'VD High':c.vd>3?'VD Warn':'OK';
+    const statusText  = c.vd>5?'CD Alta':c.vd>3?'CD Aviso':'OK';
 
     // Mini load bar: VA vs breaker capacity
     const capVA  = c.breaker * (parseInt(c.volts)===240?240:120) * EM.SAFETY;
@@ -1089,19 +1183,21 @@ const FP = {
   showRuns:true,
   scale:20, // px per foot
   _sid:1,
+  panelX:30,
+  panelY:360,
   TOOLS:[
-    {id:'outlet',   label:'Outlet',   icon:'outlet'},
+    {id:'outlet',   label:'Contacto', icon:'outlet'},
     {id:'gfci',     label:'GFCI',     icon:'gfci'},
-    {id:'switch',   label:'Switch',   icon:'switch'},
-    {id:'switch3',  label:'3-Way',    icon:'sw3'},
+    {id:'switch',   label:'Apagador', icon:'switch'},
+    {id:'switch3',  label:'3 Vías',   icon:'sw3'},
     {id:'dimmer',   label:'Dimmer',   icon:'dim'},
-    {id:'light',    label:'Ceiling',  icon:'light'},
-    {id:'recessed', label:'Recessed', icon:'rcs'},
-    {id:'fan',      label:'Fan',      icon:'fan'},
+    {id:'light',    label:'Luminaria',icon:'light'},
+    {id:'recessed', label:'Empotrado',icon:'rcs'},
+    {id:'fan',      label:'Ventilad.',icon:'fan'},
     {id:'outlet240',label:'240V',     icon:'o240'},
-    {id:'smoke',    label:'Smoke',    icon:'smk'},
-    {id:'select',   label:'Select',   icon:'sel'},
-    {id:'delete',   label:'Delete',   icon:'del'},
+    {id:'smoke',    label:'Detector', icon:'smk'},
+    {id:'select',   label:'Mover',    icon:'sel'},
+    {id:'delete',   label:'Borrar',   icon:'del'},
   ],
 
   symSVG(type,x,y,size=20) {
@@ -1133,14 +1229,34 @@ const FP = {
     this.symbols = this.symbols.filter(s=>Math.hypot(s.x-x,s.y-y)>14);
   },
 
+  renderPanel() {
+    const g = document.getElementById('fpPanel');
+    if(!g) return;
+    const inRoom = State.rooms.find(r => r.fx !== undefined &&
+      this.panelX+26 >= r.fx && this.panelX+26 <= r.fx+r.l*this.scale &&
+      this.panelY+41 >= r.fy && this.panelY+41 <= r.fy+r.w*this.scale);
+    const roomLabel = inRoom ? inRoom.name : 'Sin asignar';
+    const service = document.getElementById('pi_service')?.value||'200A';
+    g.setAttribute('transform', `translate(${this.panelX},${this.panelY})`);
+    g.innerHTML = `
+      <rect width="52" height="84" fill="${inRoom?'#1e3a5f':'#1e293b'}" rx="4" stroke="${inRoom?'#f59e0b':'#475569'}" stroke-width="${inRoom?2:1.5}"/>
+      <rect x="5" y="5" width="42" height="52" fill="#334155" rx="2"/>
+      <text x="26" y="19" text-anchor="middle" fill="#f59e0b" font-size="7" font-weight="bold">TABLERO</text>
+      <text x="26" y="29" text-anchor="middle" fill="#f59e0b" font-size="7" font-weight="bold">GENERAL</text>
+      <text x="26" y="40" text-anchor="middle" fill="#94a3b8" font-size="6">${service}</text>
+      <text x="26" y="51" text-anchor="middle" fill="#94a3b8" font-size="5">120/240V</text>
+      <rect x="0" y="61" width="52" height="20" fill="${inRoom?'#065f46':'#374151'}" rx="0"/>
+      <text x="26" y="71" text-anchor="middle" fill="${inRoom?'#34d399':'#94a3b8'}" font-size="5">${roomLabel.substring(0,10)}</text>
+      <text x="26" y="79" text-anchor="middle" fill="#64748b" font-size="4.5">⬆ arrastrar</text>`;
+  },
+
   render() {
     const layer = document.getElementById('fpSymbols');
     const runLayer = document.getElementById('fpHomeRuns');
     layer.innerHTML='';
     runLayer.innerHTML='';
 
-    // Get panel position (default 55, 400)
-    const px=55, py=400;
+    const px = this.panelX+26, py = this.panelY+41;
 
     for(const s of this.symbols) {
       layer.innerHTML += `<g class="fp-sym" data-id="${s.id}" style="cursor:move">
@@ -1151,6 +1267,7 @@ const FP = {
         runLayer.innerHTML += `<line x1="${px}" y1="${py}" x2="${s.x}" y2="${s.y}" stroke="${clr}" stroke-width="0.7" stroke-dasharray="4 3" opacity="0.5"/>`;
       }
     }
+    this.renderPanel();
   },
 
   renderRooms() {
@@ -1205,12 +1322,18 @@ const FP = {
 
   initEvents() {
     const canvas = document.getElementById('fpCanvas');
-    let dragSym=null, dragRoom=null, ox=0, oy=0;
+    let dragSym=null, dragRoom=null, dragPanel=false, ox=0, oy=0, pox=0, poy=0;
 
     canvas.addEventListener('mousemove', e=>{
       const r=canvas.getBoundingClientRect();
       const mx=e.clientX-r.left, my=e.clientY-r.top;
       document.getElementById('fpCoords').textContent=`x:${(mx/20*0.3).toFixed(1)}m y:${(my/20*0.3).toFixed(1)}m`;
+      if(dragPanel) {
+        this.panelX = Math.max(0, this.snap(mx-pox));
+        this.panelY = Math.max(0, this.snap(my-poy));
+        this.render();
+        return;
+      }
       if(dragSym) { dragSym.x=this.snap(mx); dragSym.y=this.snap(my); this.render(); }
       if(dragRoom) { dragRoom.fx=this.snap(mx-ox); dragRoom.fy=this.snap(my-oy); this.renderRooms(); }
     });
@@ -1219,6 +1342,13 @@ const FP = {
       const r=canvas.getBoundingClientRect();
       const mx=e.clientX-r.left, my=e.clientY-r.top;
       if(e.button===2) { this.deleteAt(mx,my); this.render(); return; }
+
+      // Check panel drag (select tool or no tool)
+      if(this.selectedTool==='select'||this.selectedTool===null) {
+        if(mx>=this.panelX && mx<=this.panelX+52 && my>=this.panelY && my<=this.panelY+84) {
+          dragPanel=true; pox=mx-this.panelX; poy=my-this.panelY; return;
+        }
+      }
 
       // Check if clicking on existing symbol
       const hit = this.symbols.find(s=>Math.hypot(s.x-mx,s.y-my)<14);
@@ -1240,7 +1370,7 @@ const FP = {
       if(this.selectedTool==='delete') { this.deleteAt(mx,my); this.render(); }
     });
 
-    canvas.addEventListener('mouseup', ()=>{ dragSym=null; dragRoom=null; });
+    canvas.addEventListener('mouseup', ()=>{ dragSym=null; dragRoom=null; dragPanel=false; });
     canvas.addEventListener('contextmenu', e=>{ e.preventDefault(); });
   }
 };
@@ -1523,7 +1653,7 @@ async function exportPDF() {
 function updateProjectInfo() {
   const name = document.getElementById('pi_name').value;
   const svc  = document.getElementById('pi_service').value;
-  document.getElementById('hdrProject').textContent = name||'New Project';
+  document.getElementById('hdrProject').textContent = name||'Nuevo Proyecto';
   document.getElementById('hdrService').textContent = svc+' / 120-240V';
 }
 
@@ -1541,10 +1671,10 @@ function openRoomModal(id) {
       document.getElementById('rm_doors').value=r.doors||1;
       document.getElementById('rm_run').value=r.run||9;
     }
-    document.getElementById('roomModalTitle').textContent='Edit Room';
+    document.getElementById('roomModalTitle').textContent='Editar Cuarto';
   } else {
     document.getElementById('rm_name').value='';
-    document.getElementById('roomModalTitle').textContent='Add Room';
+    document.getElementById('roomModalTitle').textContent='Agregar Cuarto';
   }
   document.getElementById('roomModal').classList.remove('hidden');
 }
@@ -1581,10 +1711,10 @@ function openApplianceModal(id) {
       document.getElementById('ap_dedicated').value=String(a.dedicated);
       document.getElementById('ap_run').value=a.run||40;
     }
-    document.getElementById('appModalTitle').textContent='Edit Appliance';
+    document.getElementById('appModalTitle').textContent='Editar Electrodoméstico';
   } else {
     document.getElementById('ap_name').value='';
-    document.getElementById('appModalTitle').textContent='Add Appliance';
+    document.getElementById('appModalTitle').textContent='Agregar Electrodoméstico';
   }
   document.getElementById('appModal').classList.remove('hidden');
 }
@@ -1659,10 +1789,10 @@ function calcConductor() {
                    vdPct<=5?'bg-amber-50 border-amber-300 text-amber-800':
                    'bg-red-50 border-red-300 text-red-800';
   const msg      = vdPct>maxVD
-    ? `⚠ Voltage drop ${vdPct.toFixed(1)}% exceeds ${maxVD}% limit. Use #${vdAwg} AWG.`
+    ? `⚠ Caída de tensión ${vdPct.toFixed(1)}% excede el límite de ${maxVD}%. Usar #${vdAwg} AWG.`
     : upsized
-    ? `⬆ Upsized #${baseAwg}→#${finalAwg} AWG to meet ${maxVD}% VD limit.`
-    : `✓ #${finalAwg} AWG satisfies both ampacity and voltage drop requirements.`;
+    ? `⬆ Calibre aumentado #${baseAwg}→#${finalAwg} AWG para cumplir límite de caída ${maxVD}%.`
+    : `✓ #${finalAwg} AWG cumple ampacidad y caída de tensión.`;
 
   // AWG comparison rows
   const rows = EM.AWG_LIST.map(awg=>{
@@ -1675,32 +1805,32 @@ function calcConductor() {
       <td>${EM.AWG_AMP[awg]}A</td>
       <td class="${ok?'text-emerald-600':'text-red-600'}">${vd.toFixed(2)}%</td>
       <td>${(EM.vdrop(awg,amps,run)).toFixed(3)}V</td>
-      <td>${ok?'<span class="badge badge-ok">✓ OK</span>':'<span class="badge badge-crit">✕ Exceed</span>'}${hi?' ⟵ Selected':''}</td>
+      <td>${ok?'<span class="badge badge-ok">✓ OK</span>':'<span class="badge badge-crit">✕ Excede</span>'}${hi?' ⟵ Elegido':''}</td>
     </tr>`;
   }).join('');
 
   el.innerHTML=`
     <div class="grid grid-cols-3 gap-3 mb-4">
       <div class="text-center p-2 bg-white rounded border">
-        <div class="text-xs text-gray-500 mb-1">Required Current</div>
+        <div class="text-xs text-gray-500 mb-1">Corriente Requerida</div>
         <div class="text-xl font-black text-slate-800">${amps.toFixed(2)} A</div>
         <div class="text-xs text-gray-400">${va.toFixed(0)} VA @ ${volts}V</div>
       </div>
       <div class="text-center p-2 bg-indigo-50 rounded border border-indigo-200">
-        <div class="text-xs text-indigo-500 mb-1">Breaker Size</div>
+        <div class="text-xs text-indigo-500 mb-1">Breaker</div>
         <div class="text-xl font-black text-indigo-700">${breaker}A</div>
-        <div class="text-xs text-gray-400">10kAIC residential</div>
+        <div class="text-xs text-gray-400">Residencial 10kAIC</div>
       </div>
       <div class="text-center p-2 bg-emerald-50 rounded border border-emerald-200">
-        <div class="text-xs text-emerald-600 mb-1">Recommended AWG</div>
+        <div class="text-xs text-emerald-600 mb-1">Calibre Recomendado</div>
         <div class="text-xl font-black text-emerald-700">#${finalAwg} AWG</div>
-        <div class="text-xs ${vdColor}">${vdPct.toFixed(2)}% VD (${vdVolts.toFixed(3)}V)</div>
+        <div class="text-xs ${vdColor}">${vdPct.toFixed(2)}% CD (${vdVolts.toFixed(3)}V)</div>
       </div>
     </div>
     <div class="mb-3 p-2 rounded border text-xs font-medium ${vdBg}">${msg}</div>
-    <div class="text-xs font-bold text-slate-600 mb-1">All Valid Gauges for This Load:</div>
-    <table class="text-xs w-full"><thead><tr><th>AWG</th><th>Ampacity</th><th>VD %</th><th>VD (V)</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>
-    <div class="mt-2 text-xs text-gray-400">Formula: VD = (2 × ${runM}m × R × ${amps.toFixed(2)}A) / 304.8 &nbsp;|&nbsp; VD% = VD / ${volts}V × 100</div>`;
+    <div class="text-xs font-bold text-slate-600 mb-1">Todos los calibres válidos para esta carga:</div>
+    <table class="text-xs w-full"><thead><tr><th>AWG</th><th>Ampacidad</th><th>CD %</th><th>CD (V)</th><th>Estado</th></tr></thead><tbody>${rows}</tbody></table>
+    <div class="mt-2 text-xs text-gray-400">Fórmula: CD = (2 × ${runM}m × R × ${amps.toFixed(2)}A) / 304.8 &nbsp;|&nbsp; CD% = CD / ${volts}V × 100</div>`;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1898,33 +2028,33 @@ document.querySelectorAll('.tab-btn').forEach(btn=>{
 function loadSampleData() {
   State.rooms=[];State.appliances=[];State._roomId=1;State._appId=1;
   const rooms=[
-    {name:'Living Room',type:'living',l:6.1,w:4.6,h:2.7,doors:2,run:7.6},
-    {name:'Kitchen',type:'kitchen',l:4.3,w:3.7,h:2.7,doors:1,run:9.1},
-    {name:'Dining Room',type:'dining',l:3.7,w:3.4,h:2.7,doors:1,run:10.7},
-    {name:'Master Bedroom',type:'bedroom',l:4.3,w:4.0,h:2.7,doors:1,run:12.2},
-    {name:'Bedroom 2',type:'bedroom',l:3.7,w:3.4,h:2.7,doors:1,run:13.7},
-    {name:'Bedroom 3',type:'bedroom',l:3.4,w:3.0,h:2.7,doors:1,run:15.2},
-    {name:'Bathroom 1',type:'bathroom',l:2.4,w:1.8,h:2.7,doors:1,run:10.7},
-    {name:'Bathroom 2',type:'bathroom',l:2.1,w:1.5,h:2.7,doors:1,run:13.7},
+    {name:'Sala',type:'living',l:6.1,w:4.6,h:2.7,doors:2,run:7.6},
+    {name:'Cocina',type:'kitchen',l:4.3,w:3.7,h:2.7,doors:1,run:9.1},
+    {name:'Comedor',type:'dining',l:3.7,w:3.4,h:2.7,doors:1,run:10.7},
+    {name:'Recámara Principal',type:'bedroom',l:4.3,w:4.0,h:2.7,doors:1,run:12.2},
+    {name:'Recámara 2',type:'bedroom',l:3.7,w:3.4,h:2.7,doors:1,run:13.7},
+    {name:'Recámara 3',type:'bedroom',l:3.4,w:3.0,h:2.7,doors:1,run:15.2},
+    {name:'Baño 1',type:'bathroom',l:2.4,w:1.8,h:2.7,doors:1,run:10.7},
+    {name:'Baño 2',type:'bathroom',l:2.1,w:1.5,h:2.7,doors:1,run:13.7},
     {name:'Garage',type:'garage',l:6.1,w:5.5,h:2.7,doors:1,run:6.1},
-    {name:'Laundry Room',type:'laundry',l:2.4,w:2.1,h:2.7,doors:1,run:9.1},
+    {name:'Lavandería',type:'laundry',l:2.4,w:2.1,h:2.7,doors:1,run:9.1},
   ];
   rooms.forEach(r=>State.addRoom(r));
 
   const apps=[
-    {name:'Electric Dryer',va:5600,volts:240,dedicated:'true',run:9.1},
-    {name:'Water Heater (Elec)',va:4500,volts:240,dedicated:'true',run:7.6},
-    {name:'Central AC',va:5000,volts:240,dedicated:'true',run:6.1},
-    {name:'Refrigerator',va:700,volts:120,dedicated:'true',run:9.1},
-    {name:'Dishwasher',va:1200,volts:120,dedicated:'true',run:9.8},
-    {name:'Microwave',va:1500,volts:120,dedicated:'true',run:9.1},
-    {name:'Garbage Disposal',va:700,volts:120,dedicated:'true',run:9.1},
+    {name:'Secadora Eléctrica',va:5600,volts:240,dedicated:'true',run:9.1},
+    {name:'Calentador de Agua',va:4500,volts:240,dedicated:'true',run:7.6},
+    {name:'Aire Acondicionado',va:5000,volts:240,dedicated:'true',run:6.1},
+    {name:'Refrigerador',va:700,volts:120,dedicated:'true',run:9.1},
+    {name:'Lavavajillas',va:1200,volts:120,dedicated:'true',run:9.8},
+    {name:'Microondas',va:1500,volts:120,dedicated:'true',run:9.1},
+    {name:'Triturador',va:700,volts:120,dedicated:'true',run:9.1},
   ];
   apps.forEach(a=>State.addAppl(a));
 
-  document.getElementById('pi_name').value='Sample 3-Bedroom Residence';
-  document.getElementById('pi_client').value='John Smith';
-  document.getElementById('pi_address').value='123 Main Street, Anytown';
+  document.getElementById('pi_name').value='Residencia 3 Recámaras (Ejemplo)';
+  document.getElementById('pi_client').value='Juan Torres';
+  document.getElementById('pi_address').value='Calle Principal 123, Ciudad';
   document.getElementById('pi_date').value=new Date().toISOString().split('T')[0];
   document.getElementById('pi_aream').value='147';
   updateProjectInfo();
@@ -1937,6 +2067,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   initPalette();
   FP.initEvents();
   loadSampleData();
+  FP.renderPanel();
 });
 </script>
 </body>
